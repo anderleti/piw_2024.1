@@ -62,12 +62,6 @@ Letícia Maciel Silva, 535833, Design Digital
 
 ## Operações implementadas para cada entidade da aplicação
 
-- Entidade  
-- Criação
-- Leitura
-- Atualização
-- Remoção
-- Usuário
 
 | Entidade | Criação (C) | Leitura (R) | Atualização (U) | Remoção (D) |
 | ------------- | ------------- | ------------- | ------------- | ------------- |
