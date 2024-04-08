@@ -1,7 +1,7 @@
 # piw_2024.1
 Repositório da disciplina de Projeto de Interfaces Web
 
-Membros da equipe
+##Membros da equipe
 Francisco Anderson Silva Lima, 538917, Design Digital
 Letícia Maciel Silva, 535833, Design Digital
 
