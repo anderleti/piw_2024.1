@@ -70,13 +70,14 @@ Letícia Maciel Silva, 535833, Design Digital
 - Usuário
 
 | Entidade | Criação (C) | Leitura (R) | Atualização (U) | Remoção (D) |
-| --- | --- | --- | --- |
+| ------------- | ------------- | ------------- | ------------- | ------------- |
 | Usuário  |  |  |  |  |
 | Adm |  |  |  |  |
 | Trabalho artistisco | X  | X  | X  | X  |
 | Comentário | X  | X  | X  | X  |
 | Salvar | X  | X  |   | X  |
 | Curtidas | X  | X  |   | X  |
+
 
 
 ## Rotas da API REST utilizadas
