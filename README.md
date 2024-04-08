@@ -1,17 +1,17 @@
-## Portfólio de Artista
+# Portfólio de Artista
 Um portfólio online para exposição de trabalhos de um artista.
 
-# Membros da equipe
+## Membros da equipe
 Francisco Anderson Silva Lima, 538917, Design Digital
 Letícia Maciel Silva, 535833, Design Digital
 
-# O que vai ser
+## O que vai ser
 - Plataforma de Portfólio/Galeria digitais de um artista.
 
-# Domínio da aplicação
+## Domínio da aplicação
 - Site de exposição de trabalhos artísticos
 
-# Papeis ou tipos de usuário da aplicação
+## Papeis ou tipos de usuário da aplicação
 
 - Usuário não registrado
 - Usuário registrado
@@ -23,13 +23,13 @@ Letícia Maciel Silva, 535833, Design Digital
 - Curtida
 - Salvar
 
-# Entidades ou tabelas do sistema
+## Entidades ou tabelas do sistema
 - Administrador
 - Usuários
 - Trabalho
 - Comentários
 
-# Principais funcionalidades da aplicação
+## Principais funcionalidades da aplicação
 **Sobre os usuários comuns**
 - Usuário não registrado poderá ver os trabalhos e os comentários feitos por usuários registrados.
 - Usuário registrado pode ver os trabalhos e os comentários de outros usuários. Adicionalmente, eles podem escrever comentários, curtir e salvar os trabalhos favoritos.
@@ -49,7 +49,7 @@ Letícia Maciel Silva, 535833, Design Digital
 - As curtidas podem ser dadas por usuários registrados e visualizadas por todos.
 - Salvos serão vistos apenas pelo usuário e o administrador poderá ver somente a quantidade de salvos.
 
-# Tecnologias e frameworks utilizados
+## Tecnologias e frameworks utilizados
 ** Frontend:**
 - VueJS v3.0, Vue-Router e Pinia.
 - Axios.
@@ -60,7 +60,7 @@ Letícia Maciel Silva, 535833, Design Digital
 - Express
 - ThreeJS.
 
-# Operações implementadas para cada entidade da aplicação
+## Operações implementadas para cada entidade da aplicação
 
 - Entidade  
 - Criação
@@ -96,7 +96,7 @@ X
 
 
 
-# Rotas da API REST utilizadas
+## Rotas da API REST utilizadas
 Método HTTP    URL
 POST                /auth/local
 GET                  /users/me
