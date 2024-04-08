@@ -82,7 +82,7 @@ Letícia Maciel Silva, 535833, Design Digital
 
 ## Rotas da API REST utilizadas
 |Método HTTP | URL |
-| — | — |
+| ------------- | ------------- |
 | POST  | /auth/local |
 | GET | /users/me |
 | GET | /api/artworks |
