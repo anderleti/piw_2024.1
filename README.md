@@ -36,7 +36,7 @@ Letícia Maciel Silva, 535833, Design Digital
 - Os usuários não registrados e registrados podem acessar os trabalhos no modo de visualização geral (todos os trabalhos), filtrar por datas, filtrar por categorias (tipos de mídias utilizadas).
 
 
-** Sobre o administrador**
+**Sobre o administrador**
 -  administrador (artista) da galeria pode adicionar, remover e editar os seus trabalhos, assim como apagar comentários.
 
 **Sobre os trabalhos**
@@ -50,7 +50,7 @@ Letícia Maciel Silva, 535833, Design Digital
 - Salvos serão vistos apenas pelo usuário e o administrador poderá ver somente a quantidade de salvos.
 
 ## Tecnologias e frameworks utilizados
-** Frontend:**
+**Frontend:**
 - VueJS v3.0, Vue-Router e Pinia.
 - Axios.
 - Bootstrap
@@ -69,31 +69,14 @@ Letícia Maciel Silva, 535833, Design Digital
 - Remoção
 - Usuário
 
-Adm
-
-Trabalho
-X
-X
-X
-X
-Comentário
-X
-X
-X
-X
-Salvar
-X
-X
-
-
-X
-Curtidas
-X
-X
-
-
-X
-
+| Entidade | Criação (C) | Leitura (R) | Atualização (U) | Remoção (D) |
+| ------------- | ------------- | ------------- | ------------- |
+| Usuário  |  |  |  |  |
+| Adm |  |  |  |  |
+| Trabalho artistisco | X  | X  | X  | X  |
+| Comentário | X  | X  | X  | X  |
+| Salvar | X  | X  |   | X  |
+| Curtidas | X  | X  |   | X  |
 
 
 ## Rotas da API REST utilizadas
