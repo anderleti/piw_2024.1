@@ -66,7 +66,6 @@ Letícia Maciel Silva, 535833, Design Digital
 | Entidade | Criação (C) | Leitura (R) | Atualização (U) | Remoção (D) |
 | ------------- | ------------- | ------------- | ------------- | ------------- |
 | Usuário  |  |  |  |  |
-| Adm |  |  |  |  |
 | Trabalho artistisco | X  | X  | X  | X  |
 | Comentário | X  | X  | X  | X  |
 | Salvar | X  | X  |   | X  |
