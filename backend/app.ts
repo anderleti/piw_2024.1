@@ -13,5 +13,5 @@ app.get('/', (req, res) => {
 //Start server
 const port = 8000;
 app.listen(port, () => {
-    console.log(`Servidor do portfolio esperando reqs: https://localhost/${port}`)
+    console.log(`Servidor do portfolio esperando reqs: https://localhost:${port}`)
 })
