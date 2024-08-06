@@ -1,4 +1,3 @@
-import { error } from 'console';
 import express from 'express';
 //
 const app = express();
@@ -54,14 +53,36 @@ app.get('/users/:id', (req, res) => {
 app.post('/users/', (req, res) =>{
     const{username, email, password} = req.body;
     const id = users.length + 1;
-
     if(username && email && password){
-        users.push({
-            id: id,
-            username: username,
-            email: email,
-            password: password
-        });
+        let error = null;
+        let passwordRegex = new RegExp("^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$");
+        let emailRegex = new RegExp("^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$");
+
+        switch (true) {
+            case (username.length < 5):
+                error = 'Nome de usuário deve ter pelo menos 5 caracteres';
+                break;
+            
+            case (!emailRegex.exec(email)):
+                error = 'Email inválido';
+                break;
+
+            case (!passwordRegex.exec(password)):
+                error = 'Senha inválida. Certifique-se de que a senha tenha pelo menos 8 caracteres, 1 número e 1 letra maiúscula.';
+                break;
+            
+            default:
+                // Se não houver erro, adiciona o usuário
+                users.push({
+                    id: id,
+                    username: username,
+                    email: email,
+                    password: password
+                });
+        }
+
+        res.status(400).json({ error });
+
     } else {
         res.status(400).send('Preencha todos os campos');
     }
@@ -72,23 +93,41 @@ app.post('/users/:id', (req, res) => {
     const userId = parseInt(req.params.id);
     const {username, email, password} = req.body;
     const user = users.find(u => u.id === userId);
+    
     if(user) {
-        if(username && email && password){
-            user.username = username;
-            user.email = email;
-            user.password = password;
-            res.redirect('/users/')
-        } else{
-            res.status(400).send('Preencha todos os campos');
+        let error = null;
+        let emailRegex = new RegExp("^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$");
+        let passwordRegex = new RegExp("^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$");
+        
+        switch (true) {
+            case (username.length < 5):
+                error = 'Nome de usuário deve ter pelo menos 5 caracteres';
+                break;
+           
+            case (!emailRegex.exec(email)):
+                error = 'Email inválido';
+                break;
+
+            case (!passwordRegex.exec(password)):
+                error = 'Senha inválida. Certifique-se de que a senha tenha pelo menos 8 caracteres, 1 número e 1 letra maiúscula.';
+                break;
+                
+            default:
+                // Se não houver erro, atualiza o usuário
+                user.username = username;
+                user.email = email;
+                user.password = password;
+                return res.redirect('/users/');
         }
 
-
-    }
+        // Retorna o erro encontrado
+        res.status(400).json({ error });
+    } 
+  
     else{
-        res.status(404).send('Usuário não encontrado');
+        res.status(404).json({ erro: 'Usuário não encontrado' });
     }
-}
-);
+});
 
 //delete specific user
 app.get('/users/remove/:id', (req, res) => {
@@ -108,5 +147,5 @@ app.get('/users/remove/:id', (req, res) => {
 //Start server
 const port = 8000;
 app.listen(port, () => {
-    console.log('[server]: Servidor do portfolio esperando reqs: https://localhost:${port}');
+    console.log(`Servidor do portfolio esperando reqs: https://localhost:${port}`);
 });
