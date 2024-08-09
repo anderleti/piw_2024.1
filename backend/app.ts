@@ -10,7 +10,6 @@ const app = express();
 app.use(express.json());
 
 async function main() {
-  console.log("cudepinto");
   await AppDataSource.initialize();
   const userRepository: Repository<User> = AppDataSource.getRepository(User);
 
@@ -21,7 +20,6 @@ async function main() {
 
   //show all users
   app.get("/users", async (req, res) => {
-    console.log("cudepinto get");
     const users = await userRepository.find();
     if (users.length === 0) {
       res.status(404).send("Nenhum usuário encontrado");
@@ -32,7 +30,6 @@ async function main() {
   });
   //show a user
   app.get("/users/:id", async (req, res) => {
-    console.log("cudepinto mostrar especifico");
     const userId = parseInt(req.params.id);
     const user = await userRepository.findOneBy({id: userId});
 
@@ -45,7 +42,6 @@ async function main() {
 
   //add a user
   app.post("/users/", async (req, res) => {
-    console.log("cudepinto add");
     const { username, email, password } = req.body;
     if (username && email && password) {
       let error = null;
@@ -78,7 +74,6 @@ async function main() {
 
   //update specific user
   app.post("/users/:id", async (req, res) => {
-    console.log("delete o cudepinto");
     const userId = parseInt(req.params.id);
     const { username, email, password } = req.body;
     const user = await userRepository.findOneBy({id: userId});
