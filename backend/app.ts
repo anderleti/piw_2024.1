@@ -75,11 +75,7 @@ async function main() {
   });
 
   //update specific user
-<<<<<<< HEAD
   app.put("/users/:id", async (req, res) => {
-=======
-  app.post("/users/:id", async (req, res) => {
->>>>>>> 97caa0f3d3e7aecb22c9c99b8a5c427c21cb9d44
     const userId = parseInt(req.params.id);
     let userToUpdate = await userRepository.findOneBy({id: userId});
     const { username, email, password } = req.body;
