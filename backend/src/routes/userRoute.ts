@@ -2,6 +2,8 @@ import Router from "express";
 import { AppDataSource } from "../database/data-source";
 import { User } from "../entities/User";
 import { Role } from "../entities/Role";
+import { authenticationJWT } from "../middleware/authMiddleware";
+import bcrypt from 'bcryptjs'
 
 let error: String | null = null;
 
@@ -23,7 +25,9 @@ function inputValidation(username: string, email: string, password: string, role
   }
 }
 
+
 const router = Router();
+//router.use(authenticationJWT)
 
 //show all users
 router.get("/", async (req, res) => {
@@ -53,7 +57,7 @@ router.get("/:id", async (req, res) => {
 });
 
 //add a user
-router.post("/", async (req, res) => {
+router.post("/", authenticationJWT, async (req, res) => {
   const { username, email, password, role } = req.body;
 
   const userRepository = AppDataSource.getRepository(User);
@@ -66,25 +70,27 @@ router.post("/", async (req, res) => {
   }
 
   inputValidation(username, email, password, role);
-  if (!error) {
-
+  if (!roleInDb) {
+    roleInDb = roleRepository.create({name: role});
+    await roleRepository.save(roleInDb);
+  }
+  
+  const hashedPassword = bcrypt.hashSync(password, 10)
     const newUser = {
         username: username,
         email: email,
-        password: password,
-        role: roleInDb,
+        password: hashedPassword,
+        role: roleInDb
     }
+
     await userRepository.save(newUser);
     res.status(201).json({
         data: newUser
     });
-  } else {
-    res.status(400).json({ error });
-  }
 });
 
 //update specific user
-router.put("/:id", async (req, res) => {
+router.put("/:id", authenticationJWT, async (req, res) => {
   const userRepository = AppDataSource.getRepository(User);
   const roleRepository = AppDataSource.getRepository(Role);
   

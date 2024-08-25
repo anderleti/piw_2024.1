@@ -1,14 +1,15 @@
 import "reflect-metadata";
-import { AppDataSource } from "./database/data-source";
-import { User } from "./entities/User";
-import { Repository } from "typeorm";
-
 import express from "express";
-import userRoutes from './routes/userRoute'
+import userRoute from './routes/userRoute'
+import  AuthRoutes  from './routes/authRoutes'
+import { AppDataSource } from "./database/data-source";
+
 
 //
 const app = express();
 app.use(express.json());
+app.use('/', AuthRoutes)
+app.use('users', userRoute);
 
 async function main() {
   try{
@@ -16,7 +17,7 @@ async function main() {
     await AppDataSource.initialize();
     
     //routes
-    app.use('/users', userRoutes)
+    app.use('/users', userRoute)
 
     //Start server
     const port = 8000;
