@@ -10,6 +10,7 @@ const app = express();
 app.use(express.json());
 app.use('/', authRoutes)
 app.use('users', userRoute);
+app.use('items', userRoute);
 
 async function main() {
   try{

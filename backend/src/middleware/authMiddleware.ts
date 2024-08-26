@@ -9,6 +9,8 @@ export function authenticationJWT(req: CustomizaRequest, res: Response, next: Ne
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
 
+    console.log(req.headers)
+
     if(!token) {
         return res.status(401).json({ 
             status: 401,
@@ -22,7 +24,7 @@ try {
     req.user = verified;
     next()
 
-} catch(error) {
+} catch(err) {
     return res.status(403).json({
         status: 403,
         name: 'Forbiden Error',
