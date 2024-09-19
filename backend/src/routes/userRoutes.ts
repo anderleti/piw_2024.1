@@ -10,17 +10,20 @@ let error: String | null = null;
 function inputValidation(
   username: string,
   email: string,
+  name: string,
   password: string,
-  role: string
+  // role: string
 ) {
-  if (username && email && password && role) {
+  if (username && name && email && password ) {
     const emailRegex = new RegExp("^[a-z0-9.]+@[a-z0-9]+.[a-z]+.([a-z]+)?$");
     const passwordRegex = new RegExp(
       `^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$`
     );
 
-    if (username.length < 5) {
-      return (error = "Nome de usuário deve ter pelo menos 5 caracteres.");
+    if (username.length < 3) {
+      return (error = "Nome de usuário deve ter pelo menos 3 caracteres.");
+    } else if (name.length < 5) {
+      return (error = "O seu nome deve ter pelo menos 5 caracteres.");
     } else if (!emailRegex.exec(email)) {
       return (error = "Email inválido.");
     } else if (!passwordRegex.exec(password)) {
@@ -65,9 +68,12 @@ router.get("/:id", async (req, res) => {
 });
 
 //add a user
-router.post("/", authenticationJWT, async (req, res) => {
-  const { username, email, password, role } = req.body;
+router.post("/", async (req, res) => {
+  const { username, name, email, password } = req.body;
 
+  console.log(req.body);
+
+  const role = "admin";
   const userRepository = AppDataSource.getRepository(User);
   const roleRepository = AppDataSource.getRepository(Role);
 
@@ -77,7 +83,7 @@ router.post("/", authenticationJWT, async (req, res) => {
     await roleRepository.save(roleInDb);
   }
 
-  inputValidation(username, email, password, role);
+  inputValidation(username, name , email, password);
   if (!roleInDb) {
     roleInDb = roleRepository.create({ name: role });
     await roleRepository.save(roleInDb);
@@ -87,6 +93,7 @@ router.post("/", authenticationJWT, async (req, res) => {
 
   const newUser = {
     username: username,
+    name: name,
     email: email,
     password: hashedPassword,
     role: roleInDb,
@@ -104,7 +111,7 @@ router.put("/:id", authenticationJWT, async (req, res) => {
   const roleRepository = AppDataSource.getRepository(Role);
 
   const userId = parseInt(req.params.id);
-  const { username, email, password, role } = req.body;
+  const { username, name, email, password, role } = req.body;
 
   let userToUpdate = await userRepository.findOne({
     where: { id: userId },
@@ -118,11 +125,12 @@ router.put("/:id", authenticationJWT, async (req, res) => {
   }
 
   if (userToUpdate) {
-    inputValidation(username, email, password, role);
+    inputValidation(username, name, email, password);
     if (!error) {
       const newData = {
         id: userId,
         username: username,
+        name: name,
         email: email,
         password: password,
         role: roleInDb,

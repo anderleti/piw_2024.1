@@ -1,30 +1,42 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+
 </script>
 
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <HelloWorld msg="Vite + Vue" />
+
+    <div id="nav-bar-container">
+            <nav id="nav-bar">
+
+                    <ul id="portfolio-links">
+                        <li>
+                            <a href="/artworks">Portifolio</a>
+                        </li>
+
+                        <li>
+                            <a href="/about">Os Artistas</a>
+                        </li>
+
+                    </ul>
+
+                    <ul id="user-details">
+
+                        <li>
+                            <a class="user-profile-link">
+                                <div class="user-profile-img">
+                                    <img/>
+                                </div>
+                            </a>
+                        </li>
+
+                    </ul>
+
+            </nav>
+        </div>
+
+    <RouterView></RouterView>
+
 </template>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
+
 </style>

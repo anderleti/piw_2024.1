@@ -9,6 +9,9 @@ export class User {
 
     @Column()
     username!: string;
+
+    @Column()
+    name!: string;
     
     @Column()
     email!: string;

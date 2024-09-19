@@ -17,7 +17,10 @@
     "axios": "^1.7.5",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
-    "vue": "^3.4.29"
+    "pinia": "^2.2.2",
+    "vue": "^3.4.29",
+    "vue-router": "^4.4.3",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.8.0",

@@ -16,12 +16,12 @@ async function main() {
   //routes
     app.use('/', authRoutes)
     app.use('/users', userRoute);
-    app.use('/items', userRoute);
+    app.use('/artworks', userRoute);
 
     //Start server
     const port = 8000;
     app.listen(port, () => {
-    console.log(`Servidor do portfolio esperando reqs: https://localhost:${port} OU https://127.0.0.1:${port}`);
+    console.log(`Servidor do portfolio esperando reqs: http://localhost:${port} OU http://127.0.0.1:${port}`);
       });
 
   }catch(error){
