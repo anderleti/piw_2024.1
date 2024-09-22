@@ -2,8 +2,13 @@ import { createWebHistory, createRouter } from 'vue-router'
 
 import ArtworksGrid from '../pages/artwork/ArtworksGrid.vue';
 import ArtworkPage from '../pages/artwork/ArtworkPage.vue';
+<<<<<<< HEAD
 import Login from '../pages/Login.vue';
 import Register from '../pages/Register.vue';
+=======
+import Login from '../pages/user/Login.vue';
+import Register from '../pages/user/Register.vue';
+>>>>>>> d473681 (Entrega 05: Página de login e cadastro OK)
 
 const routes =[
     // artwork routes
