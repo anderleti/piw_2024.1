@@ -267,6 +267,10 @@ function toggleCarrousel() {
 }
 
 .artwork-actions{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    color: var(--secondary-text-color);
 
 }
 

@@ -1,33 +1,12 @@
 <script setup lang="ts">
-<<<<<<< HEAD
-
-=======
-import { ref, onMounted } from 'vue'
-import { api } from './api'
-import { useRouter } from 'vue-router'
-import { useUserStore } from './stores/userStore';
-import type { User} from "./types";
-
-const router = useRouter()
-const userStore = useUserStore()
-
-async function logout(){
-    console.log('foi')
-    try{
-        api.get('/logout')
-        userStore.logout()
-        router.push('/login');
-    } catch (e) {
-        console.error(e)
-    }
-}
->>>>>>> d473681 (Entrega 05: Página de login e cadastro OK)
 </script>
 
 <template>
 
     <div id="nav-bar-container">
             <nav id="nav-bar">
+
+                <a href="/artworks" >
 
                 <svg id="camada_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 318.29 73.69">
   <g>
@@ -47,17 +26,12 @@ async function logout(){
     <path d="M285.62,53.42c-1.8-1.09-3.19-2.59-4.2-4.5-1.01-1.91-1.51-4.06-1.51-6.44,0-2.55.57-4.9,1.71-7.04,1.14-2.15,2.69-3.86,4.65-5.13s4.14-1.91,6.51-1.91c2.18,0,4.15.55,5.91,1.64s3.14,2.61,4.15,4.58,1.51,4.2,1.51,6.71-.55,4.92-1.64,7.02-2.59,3.74-4.5,4.93-4.06,1.79-6.44,1.79-4.37-.55-6.16-1.64ZM298.35,51.99c1.02-.67,1.81-1.6,2.36-2.8.55-1.19.83-2.52.83-4,0-2.18-.57-4.41-1.71-6.69-1.14-2.28-2.63-4.16-4.48-5.66-1.84-1.49-3.74-2.24-5.69-2.24-1.34,0-2.52.34-3.55,1.01-1.02.67-1.82,1.59-2.39,2.77s-.85,2.52-.85,4.02c0,2.22.58,4.46,1.73,6.74,1.16,2.28,2.66,4.16,4.5,5.63s3.76,2.22,5.74,2.22c1.31,0,2.47-.34,3.49-1.01h.01Z" style="fill: #fffaf0;"/>
   </g>
 </svg>
+                </a>
                     <ul id="portfolio-links">
-
-                        <li>
-                            <a href="/artworks">Portifolio</a>
-                        </li>
 
                         <li>
                             <a href="/about">Os Artistas</a>
                         </li>
-
-                        
 
                     </ul>
 
@@ -68,11 +42,6 @@ async function logout(){
                                 <div class="user-profile-img">
                                     <img/>
                                 </div>
-<<<<<<< HEAD
-=======
-                                <a>Meus dados</a>
-                                <a @click="logout">Sair</a>
->>>>>>> d473681 (Entrega 05: Página de login e cadastro OK)
                             </a>
                         </li>
 
@@ -88,7 +57,7 @@ async function logout(){
 <style scoped>
 
 #portfolio-links{
-    margin-left: 30px;
+    margin-left: 20px;
     margin-top: 20px;
     display: flex;
     justify-content: flex-end;

@@ -29,19 +29,11 @@ function authenticaded(authUser: User, token: string) {
   localStorage.setItem('id', authUser.id.toString())
   localStorage.setItem('email', authUser.email)
   localStorage.setItem('role', authUser.role.name)
-<<<<<<< HEAD
-=======
-  localStorage.setItem('jwt', token)
->>>>>>> d473681 (Entrega 05: Página de login e cadastro OK)
 }
 
 function logout() {
     jwt.value = ""
     user.value = {} as User
-<<<<<<< HEAD
-
-=======
->>>>>>> d473681 (Entrega 05: Página de login e cadastro OK)
     localStorage.clear()
   }
 
