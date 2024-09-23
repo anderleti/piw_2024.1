@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { api } from '../api'
+import { api } from '../../api'
+import { useRouter } from 'vue-router'
+import { useUserStore } from '../../stores/userStore'
+
+const router = useRouter()
+const userStore = useUserStore()
 
 const error = ref<Error>()
 const loading = ref(true)
@@ -19,14 +24,17 @@ async function login(){
             password: password.value
         })
 
-        const { jwt } = data
+        const user = data.data.user
+        const jwt = data.data.jwt
 
-        const res = await api.get
+        userStore.authenticaded(user, jwt)
+        
+        router.push('/')
 
     } catch (e){
-
+        error.value = e as Error
     } finally {
-
+        loading.value = false
     }
 };
 
@@ -60,9 +68,9 @@ async function login(){
 
 
             <div id="form container">
-                <form id="login-form" @submit="login">
+                <form id="login-form" @submit.prevent="login">
                     <h2>Entrar na minha conta</h2>
-                    <span>Não tem uma conta? <a v-bind:href="`/register` ">Criar uma conta</a></span><br/>
+                    <span>Não tem uma conta? <a v-bind:href="`/register`">Criar uma conta</a></span><br/>
                     <label for="username">Nome de usuário:</label><br/>
                     <input type="text" id="username" name="username" v-model="username" required><br/>
                     <label for="password">Senha:</label><br/>
@@ -70,7 +78,7 @@ async function login(){
                     <!-- <a>Esqueci minha senha</a><br/> -->
 
                     <div v-if="error">
-                        Deu erro
+                        {{ error }}
                     </div>
 
                     <input type="submit" value="Entrar">

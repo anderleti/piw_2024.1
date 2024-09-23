@@ -49,7 +49,11 @@ router.get("/", async (req, res) => {
 });
 
 //show a user
+<<<<<<< HEAD
 router.get("/:id", async (req, res) => {
+=======
+router.get("/:id", authenticationJWT, async (req, res) => {
+>>>>>>> d473681 (Entrega 05: Página de login e cadastro OK)
   const userRepository = AppDataSource.getRepository(User);
   const userId = parseInt(req.params.id);
   const user = await userRepository.findOne({
@@ -68,7 +72,11 @@ router.get("/:id", async (req, res) => {
 });
 
 //add a user
+<<<<<<< HEAD
 router.post("/", async (req, res) => {
+=======
+router.post("/",async (req, res) => {
+>>>>>>> d473681 (Entrega 05: Página de login e cadastro OK)
   const { username, name, email, password } = req.body;
 
   console.log(req.body);
@@ -149,7 +157,11 @@ router.put("/:id", authenticationJWT, async (req, res) => {
 });
 
 //delete specific user
+<<<<<<< HEAD
 router.delete("/:id", async (req, res) => {
+=======
+router.delete("/:id", authenticationJWT,async (req, res) => {
+>>>>>>> d473681 (Entrega 05: Página de login e cadastro OK)
   const userRepository = AppDataSource.getRepository(User);
   const userId = parseInt(req.params.id);
   const userToRemove = await userRepository.findOneBy({ id: userId });

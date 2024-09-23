@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import {useRouter, useRoute} from 'vue-router'
-import { api } from '../api'
-import { useUserStore } from '../stores/userStore'
-import type { User } from '../types';
+import { api } from '../../api'
+import { useUserStore } from '../../stores/userStore'
+import type { User } from '../../types';
+
+const route = useRoute() 
+const router = useRouter()
+const userStore = useUserStore()
 
 const user = ref({} as User);
 
 const sucess = ref(false)
 const update = ref(false)
-const router = useRouter()
-const route = useRoute() 
 const error = ref<Error>()
 const loading = ref(true)
 
@@ -23,22 +25,16 @@ async function registerSubmit(){
             email: user.value.email,
             password: user.value.password,
             role: "User"
-        }, {
-            headers: {
-                Authorization: 'Bearer ${userStore.jwt}'
-    
-            },
         })
         user.value = res.data.data
-        update.value = true
-        router.push('/')
+        // update.value = true
+        router.push('/login')
     } catch (e) {
     error.value = e as Error
     } finally {
         loading.value = false
     }
 };
-
 </script>
 
 <template>
@@ -46,7 +42,7 @@ async function registerSubmit(){
     
         <div id="login-content">
             <div id="form container">
-                <form id="login-form" @submit="registerSubmit">
+                <form id="login-form" @submit.prevent="registerSubmit">
                     <h2>Criar uma conta</h2>
                     <span>Já possui uma conta? <a v-bind:href="`/login` ">Entre aqui</a></span><br/>
                     <label for="username">Nome de usuário:</label><br/>
@@ -60,7 +56,7 @@ async function registerSubmit(){
                     <!-- <a>Esqueci minha senha</a><br/> -->
 
                     <div v-if="error">
-                        Deu erro
+                        {{ error }}
                     </div>
 
                     <input type="submit" value="Entrar">
