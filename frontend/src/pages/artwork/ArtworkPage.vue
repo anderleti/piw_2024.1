@@ -131,6 +131,7 @@ function toggleCarrousel() {
 
 .artork-assets-section{
     margin-bottom: 1rem;
+
 }
 
 .artork-assets-section > div{
