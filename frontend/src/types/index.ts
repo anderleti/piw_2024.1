@@ -35,7 +35,7 @@ export type Artwork = {
 export type Comment = {
   id: number;
   text: string;
-  date: Date;
+  date: Date | string
   user: User;
   artwork: Artwork;
 }

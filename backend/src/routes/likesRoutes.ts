@@ -1,6 +1,6 @@
 import Router from "express";
 import { AppDataSource } from "../database/data-source";
-import { Comments } from "../entities/Comments";
+import { Like } from "../entities/Like";
 import { authenticationJWT } from "../middleware/authMiddleware";
 import { User } from "../entities/User";
 import { Artwork } from "../entities/Artwork";
@@ -11,38 +11,64 @@ const router = Router();
 
 // router.use(authenticationJWT);
 
-//show all comments
-router.get("/:id", async (req, res) => {
-  const commentRepository = AppDataSource.getRepository(Comments);
-  const artwork = req.params.id;
+//show all Likes
+router.get("/:params", async (req, res) => {
+  const likeRepository = AppDataSource.getRepository(Like);
+  const params = req.params.params.split("&&");
+  const artwork = params[0];
+  const user = params[1];
+
+  if (!user ||!artwork) {
+    error = "Dados incompletos";
+    res.status(400).json({
+      data: error,
+    });
+    return;
+}
+
   const artworkRepository = AppDataSource.getRepository(Artwork);
   const artworkId = parseInt(artwork);
-  const artworkcomment = await artworkRepository.findOne({
+  const artworklike = await artworkRepository.findOne({
     where: { id: artworkId }
   });
-  if (!artworkcomment) {
+  if (!artworklike) {
       error = "Obra não encontrada.";
       res.status(400).json({
         data: error,
       });
       return;
   }
+
   
-  const comments = await commentRepository.find({
-    where: { artwork: artworkcomment},
+  const userRepository = AppDataSource.getRepository(User);
+  const userId = parseInt(user);
+  const userlike = await userRepository.findOne({
+    where: { id: userId },
+    relations: ["role"],
+  });
+  if (!userlike) {
+      error = "Usuário não encontrado.";
+      res.status(400).json({
+        data: error,
+      });
+      return;
+  }
+  
+  const like = await likeRepository.findOne({
+    where: { artwork: artworklike, user: userlike },
     relations: ["user"],
   });
 
   res.status(200).json({
-    data: comments,
+    data: like,
   });
 });
 
 router.post("/", async (req, res) => {
-    const commentRepository = AppDataSource.getRepository(Comments);
-    const { user, artwork, comment } = req.body;
-    if (!user ||!artwork ||!comment) {
-        error = "Comentário não pode ser vazio";
+    const likeRepository = AppDataSource.getRepository(Like);
+    const { user, artwork} = req.body;
+    if (!user ||!artwork) {
+        error = "Dados incompletos";
         res.status(400).json({
           data: error,
         });
@@ -51,11 +77,12 @@ router.post("/", async (req, res) => {
 
     const userRepository = AppDataSource.getRepository(User);
     const userId = parseInt(user);
-    const usercomment = await userRepository.findOne({
+
+    const userlike = await userRepository.findOne({
       where: { id: userId },
       relations: ["role"],
     });
-    if (!usercomment) {
+    if (!userlike) {
         error = "Usuário não encontrado.";
         res.status(400).json({
           data: error,
@@ -64,10 +91,10 @@ router.post("/", async (req, res) => {
     }
     const artworkRepository = AppDataSource.getRepository(Artwork);
     const artworkId = parseInt(artwork);
-    const artworkcomment = await artworkRepository.findOne({
+    const artworklike = await artworkRepository.findOne({
       where: { id: artworkId }
     });
-    if (!artworkcomment) {
+    if (!artworklike) {
         error = "Obra não encontrada.";
         res.status(400).json({
           data: error,
@@ -76,16 +103,15 @@ router.post("/", async (req, res) => {
     }
 
     
-    const newComments = {
+    const newLike = {
         date: new Date(),
-        text: comment,
-        user: usercomment,
-        artwork: artworkcomment,
+        user: userlike,
+        artwork: artworklike,
     }
   
-    await commentRepository.save(newComments);
+    await likeRepository.save(newLike);
     res.status(201).json({
-      data: comment,
+      data: newLike,
     });
     
   });

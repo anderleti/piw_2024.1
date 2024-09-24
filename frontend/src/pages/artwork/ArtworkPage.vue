@@ -12,6 +12,7 @@ const userStore = useUserStore()
 const artwork = ref({} as Artwork)
 const comments = ref([] as Comment[])
 const commentText = ref("")
+const isliked = ref(false)
 const error = ref<Error>()
 const loading = ref(true)
 const success = ref(false)
@@ -32,6 +33,17 @@ async function loadComments(){
    try {
         const res = await api.get(`/comments/${route.params.id}`);
         comments.value = res.data.data;
+    } catch (e) {
+        error.value = e as Error
+    }
+}
+
+async function loadLike(){
+   try {
+        const res = await api.get(`/likes/${route.params.id}&&${userStore.user.id}`);
+        if(res.data.data){
+            isliked.value = true;
+        }
     } catch (e) {
         error.value = e as Error
     }
@@ -57,11 +69,33 @@ async function sendComment(){
         
     } catch (e) {
         error.value = e as Error
+    } 
+    finally {
+        await loadComments()
+
     }
 }
+async function sendLike(){
+    try {
+        await api.post(`/likes`, { 
+            artwork: route.params.id,
+            user: userStore.user.id,
+        })
+        isliked.value =!isliked.value
+    } catch (e) {
+        error.value = e as Error
+    } 
+    finally {
+        await loadComments()
+
+    }
+}
+
+
 onMounted(async() => {
     await loadArtwork()
     await loadComments()
+    await loadLike()
 })
 </script>
 
@@ -106,6 +140,7 @@ onMounted(async() => {
             </div> -->
 
             <div class="artwork-actions">
+                <button @click="sendLike">{{ isliked ? "tirar like" : "dar like"}}</button>
                 <button class="artwork-like-btn">
                     <svg class="artwork-svg-icon" version="1.1" viewBox="0 0 4.2333 4.2333" xmlns="http://www.w3.org/2000/svg">
                         <g transform="matrix(.075456 0 0 .075456 -15.223 -4.6379)" stroke-linecap="round" stroke-linejoin="round" stroke-width=".52917">
@@ -484,7 +519,7 @@ onMounted(async() => {
 
 
 .comment {
-    margin-bottom: 20px;
+    margin-bottom:20px;
     background-color: #c4b79f;
     box-sizing: border-box;
     width: 100%;
