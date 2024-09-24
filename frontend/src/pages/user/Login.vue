@@ -66,7 +66,6 @@ async function login(){
 </svg>
             </div>
 
-
             <div id="form container">
                 <form id="login-form" @submit.prevent="login">
                     <h2>Entrar na minha conta</h2>
