@@ -1,31 +1,34 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, JoinTable } from "typeorm";
 import { Like } from './Like';
+import { Author } from './Author';
 
 @Entity ()
 export class Artwork {
     @PrimaryGeneratedColumn()
-    id: number;
+    id!: number;
 
     @Column()
     title: string;
     
     @Column()
     desc: string;
+
+    @ManyToMany( ()=> Author, author => author.id)
+    artwork!: Author[]; 
+
+    @Column()
+    date!: Date;
+
+    @Column({nullable: true})
+    medias!: string;
+
+    @Column()
+    tag!: string;
+
+    @Column()
+    likes!: number;
     
     @Column()
-    tags: string[];
-
-    @Column()
-    authors: string[];
-
-    @Column()
-    date: string[];
-
-    @Column()
-    medias: [];
-
-    @OneToMany( ()=> Like, like => like.artwork)
-    likes: Like[]; 
-
+    comments!: number;
 };
 

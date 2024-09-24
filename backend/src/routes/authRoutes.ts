@@ -3,10 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { AppDataSource } from "../database/data-source";
 import { User } from "../entities/User";
-<<<<<<< HEAD
-=======
 import { Role } from "../entities/Role";
->>>>>>> d473681 (Entrega 05: Página de login e cadastro OK)
 
 const router = Router();
 
@@ -14,16 +11,12 @@ router.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
   const userRepository = AppDataSource.getRepository(User);
-<<<<<<< HEAD
-  const user = await userRepository.findOneBy({ username });
-=======
   const user = await userRepository.findOne({
     where: { username: username },
     relations: ["role"],
   });
 
   console.log(user)
->>>>>>> d473681 (Entrega 05: Página de login e cadastro OK)
 
   if (user && bcrypt.compareSync(password, user.password)) {
     const token = jwt.sign(
@@ -37,10 +30,6 @@ router.post("/login", async (req, res) => {
 
     res.status(200).json({
       data: {
-<<<<<<< HEAD
-        username: user.username,
-        email: user.email,
-=======
         user: {
           id: user.id,
           username: user.username,
@@ -52,7 +41,6 @@ router.post("/login", async (req, res) => {
             name: user.role.name,
           }
         },
->>>>>>> d473681 (Entrega 05: Página de login e cadastro OK)
         jwt: token
       },
     });

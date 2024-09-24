@@ -1,7 +1,4 @@
 <script setup lang="ts">
-<<<<<<< HEAD
-
-=======
 import { ref, onMounted } from 'vue'
 import { api } from './api'
 import { useRouter } from 'vue-router'
@@ -21,7 +18,6 @@ async function logout(){
         console.error(e)
     }
 }
->>>>>>> d473681 (Entrega 05: Página de login e cadastro OK)
 </script>
 
 <template>
@@ -31,11 +27,15 @@ async function logout(){
 
                     <ul id="portfolio-links">
                         <li>
-                            <a href="/artworks">Portifolio</a>
+                            <a href="/portfolio">Portifolio</a>
                         </li>
 
                         <li>
                             <a href="/about">Os Artistas</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/manage">Gerenciar</a>
                         </li>
 
                     </ul>
@@ -47,11 +47,8 @@ async function logout(){
                                 <div class="user-profile-img">
                                     <img/>
                                 </div>
-<<<<<<< HEAD
-=======
                                 <a>Meus dados</a>
                                 <a @click="logout">Sair</a>
->>>>>>> d473681 (Entrega 05: Página de login e cadastro OK)
                             </a>
                         </li>
 

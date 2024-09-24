@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
 import { User } from './User';
 import { Artwork } from './Artwork';
 
@@ -8,12 +8,11 @@ export class Comment {
     id: number;
     
     @Column()
-    date: string;
+    date: Date;
 
-    @OneToOne( () => User, user=> user)
-    users: User;
+    @ManyToOne( () => User, user=> user)
+    users: User[];
 
-    @OneToOne( () => User, user=> user)
+    @ManyToOne( () => User, user=> user)
     artwork: Artwork;
-
 };

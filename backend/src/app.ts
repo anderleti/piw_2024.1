@@ -1,7 +1,10 @@
 import "reflect-metadata";
 import express from "express";
-import userRoute from './routes/userRoutes'
+import userRoutes from './routes/userRoutes'
 import authRoutes  from './routes/authRoutes'
+import roleRoutes  from './routes/rolesRoutes'
+import authorsRoutes  from './routes/authorsRoutes'
+import artworkRoutes  from './routes/artworksRoutes'
 import { AppDataSource } from "./database/data-source";
 import cors from "cors";
 
@@ -15,8 +18,10 @@ async function main() {
     app.use(express.json());
   //routes
     app.use('/', authRoutes)
-    app.use('/users', userRoute);
-    app.use('/artworks', userRoute);
+    app.use('/users', userRoutes);
+    app.use('/artworks', artworkRoutes);
+    app.use('/roles', roleRoutes);
+    app.use('/authors', authorsRoutes);
 
     //Start server
     const port = 8000;

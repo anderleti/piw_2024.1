@@ -19,7 +19,7 @@
 
     <section id="artworks-grid">
       
-      <a href ="/artworks/1"class="artwork-item-card" onclick="redirectToArtwork(this)">
+      <a href ="/portfolio/1"class="artwork-item-card" onclick="redirectToArtwork(this)">
                 
                 <div class="card-thumb-container">
                     <img class="card-thumb-1" src="https://t3.ftcdn.net/jpg/02/48/42/64/360_F_248426448_NVKLywWqArG2ADUxDq6QprtIzsF82dMF.jpg" alt="image"/>

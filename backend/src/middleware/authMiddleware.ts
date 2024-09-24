@@ -9,8 +9,6 @@ export function authenticationJWT(req: CustomizaRequest, res: Response, next: Ne
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
 
-    console.log(req.headers)
-
     if(!token) {
         return res.status(401).json({ 
             status: 401,

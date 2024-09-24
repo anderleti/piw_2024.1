@@ -21,11 +21,6 @@ function toggleCarrousel() {
                     <img @click="toggleCarrousel" class="assets-item" src="https://t3.ftcdn.net/jpg/02/48/42/64/360_F_248426448_NVKLywWqArG2ADUxDq6QprtIzsF82dMF.jpg"/>
                 </div>
             </section>
-            <section class="artork-assets-section">
-                <div class="artwork-assets-single-media">
-                    <img @click="toggleCarrousel" class="assets-item" src="https://fly.metroimg.com/upload/q_85,w_700/https://uploads.metroimg.com/wp-content/uploads/2024/04/26143332/cachorro-branco-Snowball.jpg"/>
-                </div>
-            </section>
             
         </section>
         <section id="artwork-page-infos">
@@ -39,15 +34,13 @@ function toggleCarrousel() {
                     online desenvolvida para a Universidade 
                     Federal do Ceará, com o objetivo de facilitar
                     a busca e o registro de itens perdidos e encontrados 
-                    dentro do campus universitário.
+                    dentro do campus universitário. 
                 </p>
             </div>
 
             <div class="artwork-details">
                 <div class="artwork-tags">
                     <a href="">3D</a>
-                    <a href="">Concept</a>
-                    <a href="">Ilustração</a>
                 </div>
                 <div class="artwork-date">00/00/0000</div>
                 
@@ -177,7 +170,7 @@ function toggleCarrousel() {
 #artwork-page-infos{
     box-sizing: border-box;
     max-height: 93vh;
-    max-width: calc(30% - calc(var(--main-padding)*1.5));
+    width: calc(30% - calc(var(--main-padding)*1.5));
     position: fixed;
     top: 60px;
     right: var(--main-padding);
@@ -263,11 +256,7 @@ function toggleCarrousel() {
 .author a span{
     margin-top: 0.1em;
     margin-left: 0.5em;
-}
-
-.artwork-actions{
-
-}
+}  
 
 .artwork-actions button{
     background-color: transparent;
