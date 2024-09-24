@@ -71,13 +71,13 @@ loadUsers()
         <td>{{ author.username }}</td>
         <td>{{ author.bio }}</td>
         <td>
-          <RouterLink class="btn btn-sm btn-info" :to="`/authors/${author.id}`">Editar</RouterLink>
-          <button @click="" class="btn btn-sm btn-danger"><i class="bi bi-trash">Deletar</i></button>
+          <RouterLink class="list-btn-action" :to="`/authors/${author.id}`">Editar</RouterLink>
+          <button @click="" class="list-btn-action">Deletar</button>
         </td>
       </tr>
       <tr>
         
-        <td><a href="/authors/new">Adicionar um artista</a></td>
+        <td colspan="6" class="create-new" ><a  href="/authors/new">Adicionar um artista</a></td>
         
       </tr>
     </tbody>
@@ -122,4 +122,27 @@ loadUsers()
   .list-table td div img{
     height: 100%;
   }
+
+  .create-new a {
+    background-color: var(--dark-color);
+    color: var(--light-color);
+    padding: 10px;
+    border-radius: 20px;
+  }
+
+  .list-btn-action {
+    background-color: #6E1110;
+    color: var(--light-color);
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    font-size: 0.8em;
+    cursor: pointer;
+  }
+
+  .list-btn-action:first-child{
+    margin-right: 10px;
+    background-color: #bb5604;
+  }
+
 </style>

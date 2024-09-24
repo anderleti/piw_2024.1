@@ -24,9 +24,10 @@ export type Artwork = {
   id: number;
   title: string;
   desc: string;
-  authors: Author[];
+  author: Author;
   date: Date;
   medias: string[];
   tag: string;
-  likes: number
+  likes: number;
+  comments: number;
 }

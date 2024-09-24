@@ -21,13 +21,13 @@ const userStore = useUserStore()
     </thead>
     <tbody>
       <tr>
-        <RouterLink class="btn btn-sm btn-info" :to="`/users`">Gerenciar usuários</RouterLink>
+        <RouterLink class="list-redirect" :to="`/users`">Gerenciar usuários</RouterLink>
       </tr>
       <tr>
-        <RouterLink class="btn btn-sm btn-info" :to="`/authors`">Gerenciar artistas</RouterLink>
+        <RouterLink class="list-redirect" :to="`/authors`">Gerenciar artistas</RouterLink>
       </tr>
       <tr>
-        <RouterLink class="btn btn-sm btn-info" :to="`/artworks`">Gerenciar trabalhos</RouterLink>
+        <RouterLink class="list-redirect" :to="`/artworks`">Gerenciar trabalhos</RouterLink>
       </tr>
     </tbody>
   </table>
@@ -53,10 +53,19 @@ const userStore = useUserStore()
 
   .list-table tbody tr{
     margin-bottom: 1px solid gray;
+    text-align: center;
+    padding: 10px;
   }
 
   .list-table td, .list-table th{
     text-align: center;
     padding: var(--main-padding);
+  }
+
+  .list-redirect{
+    color: var(--dark-color);
+    text-decoration: none;
+    transition: color 0.3s;
+    font-size: 1.2em;
   }
 </style>

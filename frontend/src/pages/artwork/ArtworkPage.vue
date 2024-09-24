@@ -1,5 +1,29 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { api } from '../../api'
+import { useUserStore } from '../../stores/userStore';
+import type {Artwork, Author } from "../../types";
+
+const route = useRoute()
+const router = useRouter()
+const userStore = useUserStore()
+
+const artwork = ref({} as Artwork)
+const error = ref<Error>()
+const loading = ref(true)
+const success = ref(false)
+
+async function loadArtwork(){
+    try {
+    const res = await api.get(`/artworks/${route.params.id}`);
+    artwork.value = res.data.data;
+  } catch (e) {
+    error.value = e as Error
+  } finally {
+    loading.value = false
+  }
+};
 
 const carrouselToggle = ref(false);
 
@@ -10,6 +34,9 @@ function toggleCarrousel() {
   // em construção...
 }
 
+onMounted(async() => {
+    await loadArtwork()
+})
 </script>
 
 <template>
@@ -26,30 +53,27 @@ function toggleCarrousel() {
         <section id="artwork-page-infos">
 
             <h1 class="artwork-title">
-                Título
+                {{ artwork.title }}
             </h1>
 
             <div class="artwork-desc">
-                <p>O projeto <strong>"Achei"</strong> é uma plataforma 
-                    online desenvolvida para a Universidade 
-                    Federal do Ceará, com o objetivo de facilitar
-                    a busca e o registro de itens perdidos e encontrados 
-                    dentro do campus universitário. 
+                <p>
+                    {{ artwork.desc }}
                 </p>
             </div>
 
             <div class="artwork-details">
                 <div class="artwork-tags">
-                    <a href="">3D</a>
+                    <a href="">{{ artwork.tag }}</a>
                 </div>
-                <div class="artwork-date">00/00/0000</div>
+                <div class="artwork-date">{{ artwork.date }}</div>
                 
             </div>
             <div class="artwork-authors">
                 <h3>Autores</h3>
                 <div class="autores-cards-grid">
                     <div class="author">
-                        <a href=""><img src="https://fly.metroimg.com/upload/q_85,w_700/https://uploads.metroimg.com/wp-content/uploads/2024/04/26143332/cachorro-branco-Snowball.jpg"/> <span>Letícia Maciel</span></a>
+                        <a href=""><img :src="artwork.author.photo"/> <span>{{ artwork.author.name }}</span></a>
                     </div>
                 </div>
 
@@ -83,7 +107,25 @@ function toggleCarrousel() {
                     </svg>
                 </button>
             </div>
-            Em construção...<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>
+
+            <div class="artwork-comments">
+                <form v-if="userStore">
+                    <textarea placeholder="Deixe um comentário..."></textarea>
+                    <button type="submit">Comentar</button>
+                </form>
+                <span v-else><a href="/register">Crie uma conta</a> ou faça o <a href="/login" >Login</a> para comentar.</span>
+                <div>
+                    <div class="comment">
+                        <div class="comment-user-info">
+                            <span>Nome</span>
+                            <span>data</span>
+                        </div>
+                        <div class="comment-text">
+                            <p>Muito bom!!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
     </div>
 
@@ -378,5 +420,56 @@ function toggleCarrousel() {
     fill: var(--light-color);
     stroke-opacity: 100% !important;
     fill-opacity: 100% !important
+}
+
+.artwork-comments form{
+    border-radius: 10px;
+    box-sizing: border-box;
+    width: 100%;
+    border: 2px solid var(--dark-color);
+    overflow: hidden;
+    display: flex;
+    flex-direction: row-reverse;
+    margin-bottom: 20px !important;
+}
+
+.artwork-comments form textarea{
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    border: none;
+    background-color: none;
+    padding: 10px
+}
+
+.artwork-comments button{
+    position: absolute;
+    z-index:1;
+    align-self: flex-end;
+    justify-self: flex-end;
+    background-color: var(--dark-color);
+    border: none;
+    border-radius: 5px 0 5px 0;
+    color: var(--light-color);
+    padding: 5px;
+}
+
+
+.comment {
+    background-color: #c4b79f;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.comment-user-info {
+    display: flex;
+    justify-content: space-between;
+}
+.comment-text {
+    padding: 10px;
+    background-color: #e6dcc9;
+    border-radius: 5px;
 }
 </style>

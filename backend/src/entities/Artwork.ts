@@ -1,5 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, JoinTable } from "typeorm";
-import { Like } from './Like';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, JoinTable } from "typeorm";
 import { Author } from './Author';
 
 @Entity ()
@@ -13,8 +12,8 @@ export class Artwork {
     @Column()
     desc: string;
 
-    @ManyToMany( ()=> Author, author => author.id)
-    artwork!: Author[]; 
+    @ManyToOne( ()=> Author, author => author.id)
+    author!: Author; 
 
     @Column()
     date!: Date;

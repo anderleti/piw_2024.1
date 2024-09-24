@@ -155,7 +155,6 @@ onMounted(async() => {
                         {{ error }}
                     </div>
 
-                    <input v-if="id" @click="deleteRequest(author.id)" value="Deletar">
                     <input v-if="!id" type="submit" value="Adicionar">
                     <input v-else type="submit" value="Salvar edições">
                 </form>

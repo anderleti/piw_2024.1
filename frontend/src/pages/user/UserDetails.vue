@@ -143,8 +143,8 @@ onMounted(async() => {
                     <label for="password">Senha:</label><br/>
                     <input type="password" id="password" name="password" v-model="user.password" required><br>
                     <!-- <a>Esqueci minha senha</a><br/> -->
-                     <label v-if="userStore.role == 'Admin'" for="role">Função:</label>
-                    <select v-if="userStore.role == 'Admin'" id="role" name="role" v-model="user.role.name">
+                    <label v-if="userStore.role == 'Admin'" for="role">Função:</label>
+                    <select v-if="userStore.role == 'Admin'" id="role" name="role" v-model="user.role">
                         <option v-for="role in roles" :key="role.id">{{ role.name }}</option>
                     </select>
 
@@ -152,7 +152,7 @@ onMounted(async() => {
                         {{ error }}
                     </div>
 
-                    <input v-if="!id" type="submit" value="Entrar">
+                    <input v-if="!id" type="submit" value="Criar conta">
                     <input v-else type="submit" value="Salvar edições">
                 </form>
             </div>

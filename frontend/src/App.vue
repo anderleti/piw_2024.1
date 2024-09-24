@@ -22,10 +22,10 @@ async function logout(){
 
 <template>
 
-    <div id="nav-bar-container">
+    <div id="nav-bar-container" v-if="$route.meta.navBar != false" >
             <nav id="nav-bar">
 
-                <a href="/artworks" >
+                <a href="/portfolio" >
 
                 <svg id="camada_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 318.29 73.69">
                 <g>
@@ -60,15 +60,23 @@ async function logout(){
 
                     <ul id="user-details">
 
-                        <li>
-                            <a class="user-profile-link">
-                                <div class="user-profile-img">
-                                    <img/>
+                        <li v-if="userStore.isAuthenticated">
+                            <div class="user-profile-link">
+                                <div class="user-profile-details">
+                                    <span class="user-name">{{  userStore.user.name }}</span>
+                                    <div class="user-profile-img">
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"/>
+                                    </div>
                                 </div>
-                                <a>Meus dados</a>
-                                <a @click="logout">Sair</a>
-                            </a>
+                                <div class="user-options">
+                                    <RouterLink  :to="`/users/${userStore.user.id}`">Meus dados</RouterLink>
+                                    <a @click="logout">Sair</a>
+                                </div>
+                            </div>
                         </li>
+                        <li v-else>
+                            <a href="/login">Entrar</a>
+                        </li>   
 
                     </ul>
 
@@ -79,7 +87,35 @@ async function logout(){
 
 </template>
 
-<style scoped>
+<style>
+body {
+    background-color: var(--bg-color);
+}
+
+#nav-bar-container{
+    background-color: var(--dark-color);
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    z-index: 10;
+}
+
+#nav-bar{
+    margin-left: 20px;
+    box-sizing: border-box;
+    width: 98vw;
+    height: 60px;
+    padding: var(--main-padding);
+    display: flex;
+    justify-content: flex-start;
+    
+}
+
+#nav-bar ul{
+    list-style-type: none;
+    display: flex;
+    padding: 0;
+}
 
 #portfolio-links{
     margin-left: 20px;
@@ -96,4 +132,80 @@ async function logout(){
     width: auto;
 }
 
+
+#portfolio-links li {
+    margin: 0 15px 0 0;
+}   
+
+#nav-bar ul li a {
+    color: var(--main-text-color);
+    font-size: 24px;
+    border-bottom: transparent 3px solid;
+    transition: 0.1s linear;
+}
+
+#nav-bar ul li a:hover {
+    border-bottom: var(--main-text-color) 3px solid;
+}
+
+#user-details {
+    margin-left: auto;
+}
+
+.user-profile-link {
+    background-color: var(--main-text-color);
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+    align-items: center;
+}
+
+.user-profile-details{
+    display: flex;
+    align-items: center;
+}
+
+.user-name{
+    font-size: 0;
+    margin: 0   ;
+}
+
+.user-profile-link .user-profile-img{
+    height: 40px;
+    width: 40px;
+    background-color: yellow;
+    border-radius: 20px;
+    overflow: hidden;   
+    align-self: flex-end;
+}
+
+.user-profile-link .user-profile-img img{
+    width: 100%;
+    height: auto;
+}
+
+.user-profile-link .user-options{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    right: 0;
+}
+
+.user-profile-link .user-options a{
+    color: var(--dark-color) !important;
+    font-size: 0 !important;
+    text-align: center;
+    cursor: pointer;
+    margin: 0;
+}
+
+.user-profile-link:hover .user-options a{
+    font-size: 0.98em !important;   
+}
+
+.user-profile-link:hover .user-name{
+    font-size: 0.98em !important;   
+    margin-left: 20px;
+    margin-right: 10px;
+}
 </style>

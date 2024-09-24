@@ -25,9 +25,9 @@ const routes =[
     {path: '/portfolio/:id', component: ArtworkPage, meta: {title: 'Trabalho'} },
 
     // user routes
-    {path: '/login', component: Login, meta: {title: 'Entrar'}},
+    {path: '/login', component: Login, meta: {navBar: false, title: 'Entrar'}},
 
-    {path: '/register', component: UserDetails, meta: {title: 'Criar conta'}},
+    {path: '/register', component: UserDetails, meta: {navBar: false, title: 'Criar conta'}},
 
     // management routes
     {path: '/manage', component: Management,meta: {title: 'Gerenciar'}},

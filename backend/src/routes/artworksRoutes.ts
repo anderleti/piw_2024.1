@@ -1,5 +1,6 @@
 import Router from "express";
 import { AppDataSource } from "../database/data-source";
+import { Artwork } from "../entities/Artwork";
 import { Author } from "../entities/Author";
 import { authenticationJWT } from "../middleware/authMiddleware";
 
@@ -7,84 +8,104 @@ const router = Router();
 
 // router.use(authenticationJWT);
 
-//show all authors
+//show all artworks
 router.get("/", async (req, res) => {
-  const authorRepository = AppDataSource.getRepository(Author);
-  const authors = await authorRepository.find();
+  const artworkRepository = AppDataSource.getRepository(Artwork);
+  const artworks = await artworkRepository.find({relations: ['author']});
   res.status(200).json({
-    data: authors,
+    data: artworks,
   });
 });
 
 router.get("/:id", async (req, res) => {
 
-  const authorId = Number(req.params.id)
-  const authorRepository = AppDataSource.getRepository(Author);
-  const author = await authorRepository.findOne({
+  const artworkId = Number(req.params.id)
+  const artworkRepository = AppDataSource.getRepository(Artwork);
+  const artwork = await artworkRepository.findOne({
     where: {
-      id: authorId
-    }
+      id: artworkId
+    }, 
+    relations: ['author']
   });
   res.status(200).json({
-    data: author,
+    data: artwork,
   });
 });
 
-//add an author
+//add an artwork
 router.post("/", async (req, res) => {
+
+  const artworkRepository = AppDataSource.getRepository(Artwork);
+
   const authorRepository = AppDataSource.getRepository(Author);
 
-  const {name, username, bio, photo} = req.body
+  const {title, desc, tag, authorId} = req.body
 
-  const newAuthor = {
-    name: name,
-    username: username,
-    bio: bio,
-    photo: photo,
+  const author = await authorRepository.findOne({
+    where: {id: Number(authorId)}
+  })
+
+  if(!author){
+    res.status(400).json({
+      error: 'Selecione um artista'
+    })
+    return
   }
 
-  await authorRepository.save(newAuthor);
+  const newArtwork = {
+    title: title,
+    desc: desc,
+    tag: tag,
+    author: author,
+    date: new Date(),
+    likes: 0,
+    comments: 0,
+  }
+
+  await artworkRepository.save(newArtwork);
 
   res.status(201).json({
-    data: newAuthor,
+    data: newArtwork,
   });
 });
 
 export default router;
 
-//update an author
+//update an artwork
 router.put("/:id", async (req, res) => {
-  const authorRepository = AppDataSource.getRepository(Author);
+  const artworkRepository = AppDataSource.getRepository(Artwork);
 
-  const authorId = Number(req.params.id);
-  const {name, username, bio, photo} = req.body;
+  const artworkId = Number(req.params.id);
+  
+  const {title, desc, tag, authors} = req.body
 
-  const updatedAuthor = await authorRepository.save({
-    id: authorId,
-    name: name,
-    username: username,
-    bio: bio,
-    photo: photo,
-  });
+  const updatedArtwork = {
+    title: title,
+    desc: desc,
+    tag: tag,
+    authors: authors,
+  };
+
+  await artworkRepository.save(updatedArtwork)
 
   res.status(200).json({
-    data: updatedAuthor,
+    data: updatedArtwork,
   });
 });
-//dele an author
+//dele an artwork
 router.delete("/:id", async(req, res)=>{
-  const authorRepository = AppDataSource.getRepository(Author);
-  const authorId = Number(req.params.id);
-  const authorToRemove = await authorRepository.findOne({
+  const artworkRepository = AppDataSource.getRepository(Artwork);
+  const artworkId = Number(req.params.id);
+  const artworkToRemove = await artworkRepository.findOne({
     where: {
-      id: authorId
+      id: artworkId
     }
   });
 
-  if(authorToRemove){
-    await authorRepository.remove(authorToRemove);
+  if(artworkToRemove){
+    await artworkRepository.remove(artworkToRemove);
     res.status(200).json({
-      data: authorToRemove,
+      data: artworkToRemove,
     });
   }
 

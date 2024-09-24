@@ -71,8 +71,8 @@ loadUsers()
         <td>{{ user.email }}</td>
         <td>{{ user.role.name }}</td>
         <td>
-          <RouterLink class="btn btn-sm btn-info" :to="`/users/${user.id}`">Editar</RouterLink>
-          <button @click="" class="btn btn-sm btn-danger"><i class="bi bi-trash">Deletar</i></button>
+          <RouterLink class="list-btn-action" :to="`/users/${user.id}`">Editar</RouterLink>
+          <button @click="" class="list-btn-action"><i class="bi bi-trash">Deletar</i></button>
         </td>
       </tr>
     </tbody>
@@ -104,5 +104,27 @@ loadUsers()
   .list-table td, .list-table th{
     text-align: center;
     padding: var(--main-padding);
+  }
+
+  .create-new a {
+    background-color: var(--dark-color);
+    color: var(--light-color);
+    padding: 10px;
+    border-radius: 20px;
+  }
+
+  .list-btn-action {
+    background-color: #6E1110;
+    color: var(--light-color);
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    font-size: 0.8em;
+    cursor: pointer;
+  }
+
+  .list-btn-action:first-child{
+    margin-right: 10px;
+    background-color: #bb5604;
   }
 </style>

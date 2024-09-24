@@ -1,5 +1,33 @@
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { api } from '../../api'
+import { useUserStore } from '../../stores/userStore';
+import type {Artwork} from "../../types";
 
+const router = useRouter()
+
+const userStore = useUserStore()
+
+const artworks = ref([] as Artwork[])
+const error = ref<Error>()
+const loading = ref(true)
+const success = ref(false)
+
+async function loadArtworks(){
+    try {
+    const res = await api.get('/artworks');
+    artworks.value = res.data.data;
+  } catch (e) {
+    error.value = e as Error
+  } finally {
+    loading.value = false
+  }
+};
+
+onMounted(async() => {
+    await loadArtworks()
+})
 
 </script>
 
@@ -9,17 +37,14 @@
     <section id="artwork-search-container">
         <div class="search-bar">
             <form>
-                <div id="filtrar">Filtrar</div>
-               
                 <input type="select" placeholder="Pesquisar...">
-                <div><button>Enter</button></div>
             </form>
         </div>
     </section>
 
     <section id="artworks-grid">
       
-      <a href ="/portfolio/1"class="artwork-item-card" onclick="redirectToArtwork(this)">
+        <a v-for="artwork in artworks" v-bind:href="`/portfolio/${artwork.id}`" class="artwork-item-card" onclick="redirectToArtwork(this)">
                 
                 <div class="card-thumb-container">
                     <img class="card-thumb-1" src="https://t3.ftcdn.net/jpg/02/48/42/64/360_F_248426448_NVKLywWqArG2ADUxDq6QprtIzsF82dMF.jpg" alt="image"/>
@@ -27,15 +52,15 @@
 
                 <div class="card-details">
                     <div class="card-tags">
-                        <a href="">Tag</a>
+                        <a href="">{{ artwork.tag }}</a>
                     </div>
                     <div class="card-desc">
-                        <a class="artwork-link" href="#"><h3>Título</h3></a>
-                        <p>Descrição</p>
+                        <a class="artwork-link" href="#"><h3>{{ artwork.title }}</h3></a>
+                        <p> {{ artwork.desc }} </p>
                     </div>
                     <div class="card-infos">
                         <div class="card-authors">
-                            <a href="">Autor</a>
+                            <a href="">{{ artwork.author.name }}</a>
                         </div>
                         <div class="card-status">
                             <div> 
@@ -45,7 +70,7 @@
                                         <path class="dark-svg-part" d="m218.14 70.815c-6.471 2.7e-5 -11.717 5.2461-11.717 11.717 6e-3 2.3849 0.74062 4.7112 2.1043 6.6678h-0.0222l13.524 19.544 0.0651 5.2e-4c1.7229 2.5733 4.6082 4.1266 7.705 4.1481 3.0528-0.0195 5.9039-1.5281 7.6373-4.0411l0.0589 5.2e-4 13.688-19.614h-0.0269c1.382-1.9636 2.1274-4.3044 2.1353-6.7055-3e-5 -6.4711-5.246-11.717-11.717-11.717-6.4586 0.0017-11.698 5.2296-11.714 11.688-1e-3 0.0096-2e-3 0.01929-3e-3 0.02894-3.3e-4 -0.0096-6.8e-4 -0.01929-1e-3 -0.02894-0.016-6.4593-5.2568-11.688-11.716-11.688z"/>
                                     </g>
                                 </svg>
-                                <span>00</span>          
+                                <span> {{ artwork.likes }} </span>          
                             </div>
 
                             <div>
@@ -56,12 +81,12 @@
                                             <path class="light-svg-part" d="m218.11 80.165c-1.2951 0-2.3378 1.0428-2.3378 2.3378s1.0428 2.3373 2.3378 2.3373h28.052c1.2951 0 2.3373-1.0423 2.3373-2.3373s-1.0423-2.3378-2.3373-2.3378zm27.863 9.3503c-1.191 0-2.1497 0.95923-2.1497 2.1503v0.37414c0 1.191 0.95871 2.1497 2.1497 2.1497h0.37569c1.191 0 2.1497-0.95871 2.1497-2.1497v-0.37414c0-1.191-0.95871-2.1503-2.1497-2.1503zm-27.862 0.0015c-1.2951 0-2.3373 1.0428-2.3373 2.3378s1.0422 2.3373 2.3373 2.3373h18.7c1.2951 0 2.3378-1.0423 2.3378-2.3373s-1.0428-2.3378-2.3378-2.3378z" fill="#e9afaf" stroke-width=".57157"/>
                                         </g>
                                     </svg>
-                                    <span>00</span> 
+                                    <span> {{ artwork.comments }} </span> 
                             </div>           
                         </div>
                     </div>
                 </div>
-            </a>
+        </a>
 
     </section>
 
