@@ -40,7 +40,7 @@ const router = Router();
 // router.use(authenticationJWT);
 
 //show all users
-router.get("/", async (req, res) => {
+router.get("/", authenticationJWT, async (req, res) => {
   const userRepository = AppDataSource.getRepository(User);
   const users = await userRepository.find({ relations: ["role"] });
   res.status(200).json({
@@ -49,7 +49,7 @@ router.get("/", async (req, res) => {
 });
 
 //show a user
-router.get("/:id", async (req, res) => {
+router.get("/:id", authenticationJWT, async (req, res) => {
   const userRepository = AppDataSource.getRepository(User);
   const userId = parseInt(req.params.id);
   const user = await userRepository.findOne({
@@ -68,11 +68,8 @@ router.get("/:id", async (req, res) => {
 });
 
 //add a user
-router.post("/", async (req, res) => {
+router.post("/",async (req, res) => {
   const { username, name, email, password } = req.body;
-
-  console.log(req.body);
-
   const role = "admin";
   const userRepository = AppDataSource.getRepository(User);
   const roleRepository = AppDataSource.getRepository(Role);
@@ -149,7 +146,7 @@ router.put("/:id", authenticationJWT, async (req, res) => {
 });
 
 //delete specific user
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authenticationJWT,async (req, res) => {
   const userRepository = AppDataSource.getRepository(User);
   const userId = parseInt(req.params.id);
   const userToRemove = await userRepository.findOneBy({ id: userId });

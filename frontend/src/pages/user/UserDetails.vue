@@ -3,20 +3,33 @@ import { ref, onMounted } from 'vue'
 import {useRouter, useRoute} from 'vue-router'
 import { api } from '../../api'
 import { useUserStore } from '../../stores/userStore'
-import type { User } from '../../types';
+import type { User, Role } from '../../types';
 
-const route = useRoute() 
+
+const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
+console.log(userStore.jwt)
 
 const user = ref({} as User);
+const roles = ref([] as Role[])
 
-const sucess = ref(false)
-const update = ref(false)
+const success = ref({
+    status: false,
+    message: ''
+})
 const error = ref<Error>()
 const loading = ref(true)
 
-async function registerSubmit(){
+const id = ref<Number>(-1)
+
+async function addUser(){
+
+    user.value.role = {
+        id: 1,
+        name: "User",
+    }
+
     try{
         loading.value = true
         const res = await api.post('/users/', {
@@ -24,17 +37,87 @@ async function registerSubmit(){
             name: user.value.name,
             email: user.value.email,
             password: user.value.password,
-            role: "User"
+            role: user.value.role
         })
         user.value = res.data.data
-        // update.value = true
         router.push('/login')
+    } catch (e) {
+        error.value = e as Error
+    } finally {
+        loading.value = false
+    }
+};
+
+async function updateUser(){
+    try{
+        loading.value = true
+        const res = await api.put(`/users/${id.value}`, {
+            username: user.value.username,
+            name: user.value.name,
+            email: user.value.email,
+            password: user.value.password,
+            role: "User"
+        }, {
+            headers: {
+                Authorization: `Bearer ${userStore.jwt}`
+            }
+        })
+        user.value = res.data.data
+        success.value.status = true
+        success.value.message = "Usuário atualizado com sucesos"
+    } catch (e) {
+        error.value = e as Error
+    } finally {
+        loading.value = false
+    }
+}
+
+async function loadUser(userId: Number){
+    try{
+        loading.value = true
+        const res = await api.get(`/users/${userId}`, {
+            headers: {
+        Authorization: `Bearer ${userStore.jwt}`
+      }
+        })
+        user.value = res.data.data
+        user.value.password = ""
+    } catch (e) {
+        error.value = e as Error
+    } finally {
+        loading.value = false
+    }
+
+}
+
+async function loadRoles(){
+    try{
+        loading.value = true
+        const res = await api.get('/roles/', {
+            headers: {
+            Authorization: `Bearer ${userStore.jwt}`
+            }
+        })
+        roles.value = res.data.data
     } catch (e) {
     error.value = e as Error
     } finally {
         loading.value = false
     }
-};
+}
+
+onMounted(async() => {
+    id.value = Number(route.params.id);
+    console.log(id.value)
+    if(id.value && id.value != -1){
+        await loadUser(id.value);
+        await loadRoles();
+    } else {
+
+    }
+    
+})
+
 </script>
 
 <template>
@@ -42,9 +125,15 @@ async function registerSubmit(){
     
         <div id="login-content">
             <div id="form container">
-                <form id="login-form" @submit.prevent="registerSubmit">
-                    <h2>Criar uma conta</h2>
-                    <span>Já possui uma conta? <a v-bind:href="`/login` ">Entre aqui</a></span><br/>
+                <form id="login-form" @submit.prevent="id? updateUser() : addUser()">
+                    <div v-if="!id">
+                        <h2>Criar uma conta</h2>
+                        <span >Já possui uma conta? <a v-bind:href="`/login` ">Entre aqui</a></span><br/>
+                    </div>
+                    <div v-else>
+                        <h2>Usuário {{ user.id }} - dados</h2>
+                    </div>
+
                     <label for="username">Nome de usuário:</label><br/>
                     <input type="text" id="username" name="name" v-model="user.username" required><br/>
                     <label for="name">Seu nome completo:</label><br/>
@@ -54,12 +143,17 @@ async function registerSubmit(){
                     <label for="password">Senha:</label><br/>
                     <input type="password" id="password" name="password" v-model="user.password" required><br>
                     <!-- <a>Esqueci minha senha</a><br/> -->
+                    <label v-if="userStore.role == 'Admin'" for="role">Função:</label>
+                    <select v-if="userStore.role == 'Admin'" id="role" name="role" v-model="user.role">
+                        <option v-for="role in roles" :key="role.id">{{ role.name }}</option>
+                    </select>
 
                     <div v-if="error">
                         {{ error }}
                     </div>
 
-                    <input type="submit" value="Entrar">
+                    <input v-if="!id" type="submit" value="Criar conta">
+                    <input v-else type="submit" value="Salvar edições">
                 </form>
             </div>
 

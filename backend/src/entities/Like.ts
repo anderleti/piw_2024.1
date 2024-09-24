@@ -11,8 +11,7 @@ export class Like {
     @ManyToOne( ()=> User, user => user)
     user: User; 
 
-    @ManyToOne( ()=> Artwork, artwork => artwork.likes)
+    @ManyToOne( ()=> Artwork)
     artwork: Artwork; 
-
 };
 

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { api } from '../../api'
+import { api } from '../api'
 import { useRouter } from 'vue-router'
-import { useUserStore } from '../../stores/userStore'
+import { useUserStore } from '../stores/userStore'
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -27,7 +27,7 @@ async function login(){
         const user = data.data.user
         const jwt = data.data.jwt
 
-        userStore.authenticaded(user, jwt)
+        userStore.authenticated(user, jwt)
         
         router.push('/')
 

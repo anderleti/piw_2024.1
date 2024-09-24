@@ -11,7 +11,5 @@ export class Role {
 
     @OneToMany( () => User, user=> user.role)
     users!: User[];
-
-
 };
 
