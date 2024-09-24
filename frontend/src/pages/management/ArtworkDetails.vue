@@ -52,7 +52,7 @@ async function updateArtwork(){
             title: artwork.value.title,
             desc: artwork.value.desc,
             tag: artwork.value.tag,
-            authorId: artwork.value.authors,
+            authorId: artwork.value.author ,
         })
         artwork.value = res.data.data
         success.value = {
