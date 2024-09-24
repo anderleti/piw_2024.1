@@ -3,13 +3,15 @@ import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { api } from '../../api'
 import { useUserStore } from '../../stores/userStore';
-import type {Artwork, Author } from "../../types";
+import type { Artwork, Author, Comment } from "../../types";
 
 const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
 
 const artwork = ref({} as Artwork)
+const comments = ref([] as Comment[])
+const commentText = ref("")
 const error = ref<Error>()
 const loading = ref(true)
 const success = ref(false)
@@ -25,6 +27,15 @@ async function loadArtwork(){
   }
 };
 
+async function loadComments(){
+   console.log(route.params.id) 
+   try {
+        const res = await api.get(`/comments/${route.params.id}`);
+        comments.value = res.data.data;
+    } catch (e) {
+        error.value = e as Error
+    }
+}
 const carrouselToggle = ref(false);
 
 function toggleCarrousel() {
@@ -34,8 +45,23 @@ function toggleCarrousel() {
   // em construção...
 }
 
+async function sendComment(){
+    try {
+        await api.post(`/comments`, { 
+            comment: commentText.value,
+            artwork: route.params.id,
+            user: userStore.user.id,
+        })
+        commentText.value = ""
+        success.value = true
+        
+    } catch (e) {
+        error.value = e as Error
+    }
+}
 onMounted(async() => {
     await loadArtwork()
+    await loadComments()
 })
 </script>
 
@@ -69,7 +95,7 @@ onMounted(async() => {
                 <div class="artwork-date">{{ artwork.date }}</div>
                 
             </div>
-            <div class="artwork-authors">
+       <!-- <div class="artwork-authors">
                 <h3>Autores</h3>
                 <div class="autores-cards-grid">
                     <div class="author">
@@ -77,7 +103,7 @@ onMounted(async() => {
                     </div>
                 </div>
 
-            </div>
+            </div> -->
 
             <div class="artwork-actions">
                 <button class="artwork-like-btn">
@@ -109,19 +135,19 @@ onMounted(async() => {
             </div>
 
             <div class="artwork-comments">
-                <form v-if="userStore">
-                    <textarea placeholder="Deixe um comentário..."></textarea>
+                <form v-if="userStore.isAuthenticated" @submit.prevent="sendComment()">
+                    <textarea placeholder="Deixe um comentário..." v-model="commentText"></textarea>
                     <button type="submit">Comentar</button>
                 </form>
                 <span v-else><a href="/register">Crie uma conta</a> ou faça o <a href="/login" >Login</a> para comentar.</span>
                 <div>
-                    <div class="comment">
+                    <div v-for="comment in comments" class="comment">
                         <div class="comment-user-info">
-                            <span>Nome</span>
-                            <span>data</span>
+                            <span>{{ comment.user.name }}</span>
+                            <span>{{ comment.date }}</span>
                         </div>
                         <div class="comment-text">
-                            <p>Muito bom!!</p>
+                            <p>{{ comment.text }}</p>
                         </div>
                     </div>
                 </div>
@@ -146,6 +172,8 @@ onMounted(async() => {
             <img src="https://t3.ftcdn.net/jpg/02/48/42/64/360_F_248426448_NVKLywWqArG2ADUxDq6QprtIzsF82dMF.jpg"/>
         </div>
     </div>
+
+    
 </template>
 
 <style scoped>

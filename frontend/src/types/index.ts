@@ -31,3 +31,11 @@ export type Artwork = {
   likes: number;
   comments: number;
 }
+
+export type Comment = {
+  id: number;
+  text: string;
+  date: Date;
+  user: User;
+  artwork: Artwork;
+}

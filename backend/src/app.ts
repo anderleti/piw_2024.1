@@ -5,6 +5,7 @@ import authRoutes  from './routes/authRoutes'
 import roleRoutes  from './routes/rolesRoutes'
 import authorsRoutes  from './routes/authorsRoutes'
 import artworkRoutes  from './routes/artworksRoutes'
+import commentsRoutes from './routes/commentsRoutes'
 import { AppDataSource } from "./database/data-source";
 import cors from "cors";
 
@@ -22,7 +23,8 @@ async function main() {
     app.use('/artworks', artworkRoutes);
     app.use('/roles', roleRoutes);
     app.use('/authors', authorsRoutes);
-
+    app.use('/comments', commentsRoutes);
+    
     //Start server
     const port = 8000;
     app.listen(port, () => {

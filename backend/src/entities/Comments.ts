@@ -3,16 +3,19 @@ import { User } from './User';
 import { Artwork } from './Artwork';
 
 @Entity ()
-export class Comment {
+export class Comments {
     @PrimaryGeneratedColumn()
     id: number;
     
     @Column()
     date: Date;
 
-    @ManyToOne( () => User, user=> user)
-    users: User[];
+    @Column()
+    text: string;
 
     @ManyToOne( () => User, user=> user)
+    user: User;
+
+    @ManyToOne( () => Artwork, artwork=> artwork)
     artwork: Artwork;
 };
