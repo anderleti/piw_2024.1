@@ -39,7 +39,7 @@ onMounted(async() => {
         <a v-for="artwork in artworks" v-bind:href="`/portfolio/${artwork.id}`" class="artwork-item-card" onclick="redirectToArtwork(this)">
                 
                 <div class="card-thumb-container">
-                    <img class="card-thumb-1" src="https://t3.ftcdn.net/jpg/02/48/42/64/360_F_248426448_NVKLywWqArG2ADUxDq6QprtIzsF82dMF.jpg" alt="image"/>
+                    <img class="card-thumb-1" src="https://media.licdn.com/dms/image/v2/D4D22AQFwb3zCtZ2dlQ/feedshare-shrink_800/feedshare-shrink_800/0/1727218877313?e=1730332800&v=beta&t=aghH-rbVX6pRkDm9VI9VnF2IOlVArKglG-PckSrSN4A" alt="image"/>
                 </div>
 
                 <div class="card-details">
@@ -108,7 +108,7 @@ onMounted(async() => {
         aspect-ratio: 1/1;
         border-radius: var(--card-border-radius);
         overflow: hidden;
-        background-color: grey;
+        background-color: rgb(39, 11, 70);
     }
 
     .card-thumb-container{

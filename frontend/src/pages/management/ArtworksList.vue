@@ -67,7 +67,7 @@ loadArtworks()
       <tr v-for="artwork in artworks" :key="artwork.id">
         <td>{{ artwork.id }}</td>
         <td>{{ artwork.title }}</td>
-        <td>{{ artwork.desc }}</td>
+        <td>{{ artwork.desc }}</td> 
         <td>{{ artwork.tag }}</td>
         <td>{{ artwork.author.name }}</td>
         <td>
@@ -95,7 +95,8 @@ loadArtworks()
   }
 
   .list-table{
-    width: 100%;
+    margin: 0 auto;
+    width: 90%;
     box-sizing: border-box; 
     border-collapse: collapse;
     border-radius: 20px;
@@ -107,8 +108,9 @@ loadArtworks()
   }
 
   .list-table td, .list-table th{
+    padding: 12px;
     text-align: center;
-    padding: var(--main-padding);
+    
   }
 
   .list-table td div{
@@ -131,9 +133,10 @@ loadArtworks()
   }
 
   .list-btn-action {
+    margin-top: 10px;
     background-color: #6E1110;
     color: var(--light-color);
-    padding: 10px;
+    padding: 8px;
     border-radius: 10px;
     border: none;
     font-size: 0.8em;
@@ -141,7 +144,7 @@ loadArtworks()
   }
 
   .list-btn-action:first-child{
-    margin-right: 10px;
+    padding: 10px;
     background-color: #bb5604;
   }
 </style>

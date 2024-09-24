@@ -84,13 +84,15 @@ loadUsers()
 
 <style scoped>
   .table-container{
+    
     width: 100vw;
     box-sizing: border-box;
     padding: var(--main-padding);
   }
 
   .list-table{
-    width: 100%;
+    margin: 0 auto;
+    width: 90%;
     box-sizing: border-box; 
     border-collapse: collapse;
     border-radius: 20px;
@@ -98,12 +100,13 @@ loadUsers()
   }
 
   .list-table tbody tr{
+    align-items: center;
     margin-bottom: 1px solid gray;
   }
 
   .list-table td, .list-table th{
     text-align: center;
-    padding: var(--main-padding);
+    padding: 15px;
   }
 
   .create-new a {
@@ -125,6 +128,7 @@ loadUsers()
 
   .list-btn-action:first-child{
     margin-right: 10px;
+    padding: 12px;
     background-color: #bb5604;
   }
 </style>

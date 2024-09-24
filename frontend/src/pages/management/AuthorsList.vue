@@ -90,9 +90,9 @@ loadUsers()
 <style scoped>
   .table-container{
     margin-top: 20px;
-    display: block; /* Necessário para o margin funcionar */
-    margin-left: auto; /* aqui */
-    margin-right: auto; /* e aqui */
+    display: block; 
+    margin-left: auto; 
+    margin-right: auto; 
     padding-top: 20px, 20px, 20px;
     width: 80vw;
     box-sizing: border-box;
@@ -120,7 +120,7 @@ loadUsers()
     width: 100%;
     overflow: hidden;
     display: flex;
-    align-items: stretch;
+    justify-content: center;
   }
 
   .list-table td div img{
@@ -147,6 +147,7 @@ loadUsers()
   }
 
   .list-btn-action:first-child{
+    padding: 12px;
     margin-right: 10px;
     background-color: #bb5604;
   }
