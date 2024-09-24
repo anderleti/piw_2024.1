@@ -484,6 +484,7 @@ onMounted(async() => {
 
 
 .comment {
+    margin-bottom: 20px;
     background-color: #c4b79f;
     box-sizing: border-box;
     width: 100%;

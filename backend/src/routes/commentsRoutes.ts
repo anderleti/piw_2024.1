@@ -16,9 +16,21 @@ router.get("/:id", async (req, res) => {
   const commentRepository = AppDataSource.getRepository(Comments);
   console.log(req.params.id)
   const artwork = req.params.id;
+  const artworkRepository = AppDataSource.getRepository(Artwork);
   const artworkId = parseInt(artwork);
+  const artworkcomment = await artworkRepository.findOne({
+    where: { id: artworkId }
+  });
+  if (!artworkcomment) {
+      error = "Obra não encontrada.";
+      res.status(400).json({
+        data: error,
+      });
+      return;
+  }
+  
   const comments = await commentRepository.find({
-    where: { id: artworkId},
+    where: { artwork: artworkcomment},
     relations: ["user"],
   });
 

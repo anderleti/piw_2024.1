@@ -16,6 +16,6 @@ export class Comments {
     @ManyToOne( () => User, user=> user)
     user: User;
 
-    @ManyToOne( () => Artwork, artwork=> artwork)
+    @ManyToOne( () => Artwork, artwork=> artwork.id)
     artwork: Artwork;
 };
