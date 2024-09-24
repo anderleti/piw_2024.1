@@ -89,9 +89,13 @@ loadUsers()
 
 <style scoped>
   .table-container{
-    width: 100vw;
+    margin-top: 20px;
+    display: block; /* Necessário para o margin funcionar */
+    margin-left: auto; /* aqui */
+    margin-right: auto; /* e aqui */
+    padding-top: 20px, 20px, 20px;
+    width: 80vw;
     box-sizing: border-box;
-    padding: var(--main-padding);
   }
 
   .list-table{
@@ -124,6 +128,8 @@ loadUsers()
   }
 
   .create-new a {
+    display: inline-block;
+    align-items: end;
     background-color: var(--dark-color);
     color: var(--light-color);
     padding: 10px;

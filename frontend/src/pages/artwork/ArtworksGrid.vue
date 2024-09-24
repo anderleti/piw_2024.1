@@ -34,14 +34,6 @@ onMounted(async() => {
 <template>
   <div id="artworks-container">
 
-    <section id="artwork-search-container">
-        <div class="search-bar">
-            <form>
-                <input type="select" placeholder="Pesquisar...">
-            </form>
-        </div>
-    </section>
-
     <section id="artworks-grid">
       
         <a v-for="artwork in artworks" v-bind:href="`/portfolio/${artwork.id}`" class="artwork-item-card" onclick="redirectToArtwork(this)">
@@ -107,42 +99,9 @@ onMounted(async() => {
     align-items: space-between;
 }
 
-.search-bar {
-    width: 490px;
-    display: block;
-    margin: 0 auto;
-    
-}
-
-.search-bar input{
-    border-radius: 10px;
-    width: 90%;
-    height: 35px;
-    padding: 0 20px;
-    font-size: 1rem;
-    border: 1px solid #D0CFCE;
-    outline: none;
-}
-
-.search-bar button {
-    margin-top: 10px;
-    background-color: var(--main-color);
-    color: white;
-    border-radius: 5px;
-    padding: 5px 10px;
-    cursor: pointer;
-    
-}
-
-#filtrar{
-    background-color: var(--main-color);
-    color: white;
-    border-radius: 5px;
-    padding: 5px 10px;
-
-}
 /* cards */
 .artwork-item-card {
+        margin-top: 20px;
         box-sizing: border-box;
         position: relative;
         float: left;
@@ -211,7 +170,9 @@ onMounted(async() => {
         font-size: 1.5rem;
     }
     .card-desc p{
-        font-size: 0.9rem;
+        font-size: 10px;
+        text-align: justify;
+
     }
 
     .card-infos{

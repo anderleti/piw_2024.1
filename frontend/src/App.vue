@@ -49,7 +49,7 @@ async function logout(){
                     <ul id="portfolio-links">
 
                         <li>
-                            <a href="/about">Os Artistas</a>
+                            <a href="/about">Artistas</a>
                         </li>
                         
                         <li>
@@ -156,7 +156,7 @@ body {
     background-color: var(--main-text-color);
     display: flex;
     flex-direction: column;
-    border-radius: 20px;
+    border-radius: 30px;
     align-items: center;
 }
 
@@ -173,7 +173,6 @@ body {
 .user-profile-link .user-profile-img{
     height: 40px;
     width: 40px;
-    background-color: yellow;
     border-radius: 20px;
     overflow: hidden;   
     align-self: flex-end;
