@@ -39,7 +39,7 @@ onMounted(async() => {
         <a v-for="artwork in artworks" v-bind:href="`/portfolio/${artwork.id}`" class="artwork-item-card" onclick="redirectToArtwork(this)">
                 
                 <div class="card-thumb-container">
-                    <img class="card-thumb-1" src="https://media.licdn.com/dms/image/v2/D4D22AQFwb3zCtZ2dlQ/feedshare-shrink_1280/feedshare-shrink_1280/0/1727218877357?e=1730332800&v=beta&t=Wgw-fXlEgpl0eWaCK4aATd-EXN5NCpltCZgEeFGwCu4" alt="image"/>
+                    <img class="card-thumb-1" src="../../assets/uno.jpg" alt="image"/>
                 </div>
 
                 <div class="card-details">

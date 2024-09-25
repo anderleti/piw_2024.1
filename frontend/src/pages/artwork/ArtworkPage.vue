@@ -10,6 +10,7 @@ const router = useRouter()
 const userStore = useUserStore()
 
 const artwork = ref({} as Artwork)
+const author = ref({} as Author)
 const comments = ref([] as Comment[])
 const commentText = ref("")
 const isliked = ref(false)
@@ -21,6 +22,7 @@ async function loadArtwork(){
     try {
     const res = await api.get(`/artworks/${route.params.id}`);
     artwork.value = res.data.data;
+    author.value = artwork.value.author;
   } catch (e) {
     error.value = e as Error
   } finally {
@@ -160,10 +162,10 @@ onMounted(async() => {
                 
             </div>
        <div class="artwork-authors">
-                <h3>Autores</h3>
+                <h3>Autor</h3>
                 <div class="autores-cards-grid">
                     <div class="author">
-                        <a href=""><img :src="artwork.author.photo"/> <span>{{ artwork.author.name }}</span></a>
+                        <a href=""><img :src="author.photo"/> <span>{{ author.name }}</span></a>
                     </div>
                 </div>
 

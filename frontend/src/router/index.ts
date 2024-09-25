@@ -14,6 +14,7 @@ import ArtworkDetails from '../pages/management/ArtworkDetails.vue';
 
 import ArtworksGrid from '../pages/artwork/ArtworksGrid.vue';
 import ArtworkPage from '../pages/artwork/ArtworkPage.vue';
+import Unauthorized from '../pages/unauthorized.vue';
 
 const routes =[
     // main routes
@@ -24,6 +25,7 @@ const routes =[
     {path: '/about', name: 'about', component: About, meta: {title: 'Casulo | Os artistas'}},
 
     {path: '/portfolio/:id', component: ArtworkPage, meta: {title: 'Trabalho'} },
+    {path: '/unauthorized', component: Unauthorized, meta: {title: 'Não vai não...'} },
 
     // user routes
     {path: '/login', component: Login, meta: {navBar: false, title: 'Entrar'}},
