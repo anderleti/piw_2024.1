@@ -47,7 +47,7 @@ const routes =[
 
     {path: '/users', component: UsersList, meta:{requiresAuth: true, restricted: true,title: 'Usuários'}},
 
-    {path: '/users/:id', component: UserDetails, meta:{requiresAuth: true, restricted: false,title: 'Dados do usuário'}},
+    {path: '/users/:id', component: UserDetails, meta:{requiresAuth: true, restricted: true,title: 'Dados do usuário'}},
 ]
 
 export const router = createRouter({
