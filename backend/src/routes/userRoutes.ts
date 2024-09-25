@@ -13,13 +13,12 @@ let error =  {
 
 function inputValidation(
   username: string,
-  email: string,
   name: string,
+  email: string,
   password: string,
-  // role: string
 ) {
   if (username && name && email && password ) {
-    const emailRegex = new RegExp("^[a-z0-9.]+@[a-z0-9]+.[a-z]+.([a-z]+)?$");
+    const emailRegex = new RegExp('^[a-z0-9.]+@[a-z0-9]+.[a-z]+.([a-z]+)?$');
     const passwordRegex = new RegExp(
       `^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$`
     );
@@ -32,7 +31,7 @@ function inputValidation(
     } else if (name.length < 5) {
       error.status = "400"
       error.name = "Validation Error"
-      error.message = "O seu nome de usuário deve ter pelo menos 5 caractes"
+      error.message = "O seu nome deve ter pelo menos 5 caractes"
       return (error);
     } else if (!emailRegex.exec(email)) {
       error.status = "400"
@@ -52,6 +51,7 @@ function inputValidation(
     return (error)
   }
 }
+
 
 const router = Router();
 
@@ -94,24 +94,26 @@ router.get("/:id", authenticationJWT, async (req, res) => {
 //add a user
 router.post("/",async (req, res) => {
   const { username, name, email, password } = req.body;
-  const role = "admin";
+  const role = "User";
   const userRepository = AppDataSource.getRepository(User);
   const roleRepository = AppDataSource.getRepository(Role);
 
   let roleInDb = await roleRepository.findOne({ where: { name: role } });
   if (!roleInDb) {
-    roleInDb = roleRepository.create({ name: role });
+    roleInDb = roleRepository.create({ name: role }); 
     await roleRepository.save(roleInDb);
   }
-
+  
+  console.log(username, name , email, password)
   inputValidation(username, name , email, password);
+  console.log(error)
 
   if (!roleInDb) {
     roleInDb = roleRepository.create({ name: role });
     await roleRepository.save(roleInDb);
   }
 
-  if(!error){
+  if(!error.status){
     const hashedPassword = bcrypt.hashSync(password, 10);
     const newUser = {
       username: username,
@@ -155,8 +157,8 @@ router.put("/:id", authenticationJWT, async (req, res) => {
   }
 
   if (userToUpdate) {
-    inputValidation(username, name, email, password);
-    if (!error) {
+    // inputValidation(username, name, email, password);
+    if (!error.status) {
       const newData = {
         id: userId,
         username: username,
@@ -171,6 +173,7 @@ router.put("/:id", authenticationJWT, async (req, res) => {
         data: newData,
       });
     } else {
+      console.error
       res.status(400).json({ 
         status: error.status,
         name: error.name,

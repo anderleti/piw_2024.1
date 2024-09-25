@@ -15,7 +15,7 @@ const id = ref<Number>(-1)
 
 const artwork = ref({} as Artwork);
 const authors = ref([] as Author[])
-const selectedAuthors = ref([] as Number[])
+const selectedAuthors = ref(-1)
 
 const success = ref({
     status: false,
@@ -24,8 +24,8 @@ const success = ref({
 const error = ref<ApplicationError>()
 const loading = ref(false)
 
-function addAuthor(authorId: Number) {
-    selectedAuthors.value.push(authorId)
+function addAuthor(authorId:number) {
+    selectedAuthors.value = authorId
 }
 
 async function addArtwork(){
@@ -58,7 +58,7 @@ async function updateArtwork(){
             title: artwork.value.title,
             desc: artwork.value.desc,
             tag: artwork.value.tag,
-            authorId: artwork.value.author ,
+            authorId: artwork.value.author,
         })
         artwork.value = res.data.data
         success.value = {
@@ -146,11 +146,11 @@ onMounted(async() => {
                 <input type="text" name="tag" id="tag" v-model="artwork.tag">
             </div>
 
-            <fieldset class="artwork-authors">
+            <fieldset v-if="!id" class="artwork-authors">
                 <legend>Autores</legend>
                 <div v-for="author in authors" class="artwork-author-single">
-                    <input @click="addAuthor(author.id)" type="checkbox" id="author1">
-                    <label for="author1">{{ author.name }}</label>
+                    <input @click="addAuthor(author.id)" :key="author.id" type="checkbox" :id="`author${author.id}`">
+                    <label :for="`author${author.id}`">{{ author.name }}</label>
                 </div>
             </fieldset>
 

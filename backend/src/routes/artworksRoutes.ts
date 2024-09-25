@@ -62,7 +62,9 @@ router.post("/", async (req, res) => {
 
   inputValidation(title, desc, tag)
 
-  if(!error && author){
+  console.log(error)
+
+  if(!error.status && author){
     const newArtwork = {
       title: title,
       desc: desc,

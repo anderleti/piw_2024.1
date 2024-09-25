@@ -99,7 +99,7 @@ loadUsers()
         <td>{{ user.role.name }}</td>
         <td>
           <RouterLink class="list-btn-action" :to="`/users/${user.id}`">Editar</RouterLink>
-          <button @click="" class="list-btn-action"><i class="bi bi-trash">Deletar</i></button>
+          <button @click="deleteUser(user.id)" class="list-btn-action">Deletar</button>
         </td>
       </tr>
     </tbody>

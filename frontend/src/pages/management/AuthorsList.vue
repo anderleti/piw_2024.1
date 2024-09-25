@@ -48,7 +48,7 @@ async function deleteAuthor(id:number){
     let deleted = authors.value.findIndex(a=>id === a.id);
     authors.value.splice(deleted, 1)
     success.value.status = true;
-    success.value.message = "Trabalho deletado com sucesso."
+    success.value.message = "Artista deletado com sucesso."
   
   } catch (e) {
     if (isAxiosError(e) && isApplicationError(e)) {
@@ -66,12 +66,12 @@ loadUsers()
 
 <div class="table-container">
 
-  <div v-if="error" class="alert alert-danger alert-dismissible" role="alert">
+  <div v-if="error" class="error" role="alert">
     {{ error.message }}
     <button @click="error=undefined" type="button" class="btn-close" aria-label="Close"></button>
   </div>
 
-  <div v-if="success.status" class="alert alert-success alert-dismissible" role="alert">
+  <div v-if="success.status" class="success" role="alert">
     {{ success.message }}
     <button @click="success.status = false" type="button" class="btn-close" aria-label="Close"></button>
   </div>

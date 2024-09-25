@@ -93,7 +93,10 @@ router.post("/", async (req, res) => {
       return;
   }
 
-    
+  artworkcomment.comments = artworkcomment.comments + 1;
+
+  await artworkRepository.save(artworkcomment)
+  
     const newComments = {
         date: new Date(),
         text: comment,

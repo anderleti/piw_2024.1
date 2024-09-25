@@ -11,7 +11,6 @@ import type { User, Role, ApplicationError } from '../../types';
 const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
-console.log(userStore.jwt)
 
 const user = ref({} as User);
 const roles = ref([] as Role[])
@@ -48,6 +47,7 @@ async function addUser(){
     } catch (e) {
         if (isAxiosError(e) && isApplicationError(e)) {
             error.value = e.response?.data
+            console.log(error.value)
         }
     } finally {
         loading.value = false
@@ -62,7 +62,7 @@ async function updateUser(){
             name: user.value.name,
             email: user.value.email,
             password: user.value.password,
-            role: "User"
+            role: userStore.role == 'Admin' ? user.value.role : 'User'
         }, {
             headers: {
                 Authorization: `Bearer ${userStore.jwt}`

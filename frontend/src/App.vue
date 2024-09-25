@@ -53,7 +53,7 @@ async function logout(){
                         </li>
                         
                         <li>
-                            <a href="/manage">Gerenciar</a>
+                            <a v-if="userStore.isAuthenticated && userStore.role == 'Admin'" href="/manage">Gerenciar</a>
                         </li>
 
                     </ul>

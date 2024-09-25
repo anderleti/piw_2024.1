@@ -130,7 +130,7 @@ onMounted(async() => {
         <div id="login-content">
             <div id="form container">
                 <form id="login-form" @submit.prevent="id? updateUser() : addUser()">
-                    <div v-if="success.status">
+                    <div v-if="success.status" class="success">
                         {{ success.message }}
                     </div>
                     <div v-if="!id">
