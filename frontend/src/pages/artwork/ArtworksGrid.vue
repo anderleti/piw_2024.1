@@ -34,20 +34,12 @@ onMounted(async() => {
 <template>
   <div id="artworks-container">
 
-    <section id="artwork-search-container">
-        <div class="search-bar">
-            <form>
-                <input type="select" placeholder="Pesquisar...">
-            </form>
-        </div>
-    </section>
-
     <section id="artworks-grid">
       
         <a v-for="artwork in artworks" v-bind:href="`/portfolio/${artwork.id}`" class="artwork-item-card" onclick="redirectToArtwork(this)">
                 
                 <div class="card-thumb-container">
-                    <img class="card-thumb-1" src="https://t3.ftcdn.net/jpg/02/48/42/64/360_F_248426448_NVKLywWqArG2ADUxDq6QprtIzsF82dMF.jpg" alt="image"/>
+                    <img class="card-thumb-1" src="https://media.licdn.com/dms/image/v2/D4D22AQFwb3zCtZ2dlQ/feedshare-shrink_800/feedshare-shrink_800/0/1727218877313?e=1730332800&v=beta&t=aghH-rbVX6pRkDm9VI9VnF2IOlVArKglG-PckSrSN4A" alt="image"/>
                 </div>
 
                 <div class="card-details">
@@ -107,49 +99,16 @@ onMounted(async() => {
     align-items: space-between;
 }
 
-.search-bar {
-    width: 490px;
-    display: block;
-    margin: 0 auto;
-    
-}
-
-.search-bar input{
-    border-radius: 10px;
-    width: 90%;
-    height: 35px;
-    padding: 0 20px;
-    font-size: 1rem;
-    border: 1px solid #D0CFCE;
-    outline: none;
-}
-
-.search-bar button {
-    margin-top: 10px;
-    background-color: var(--main-color);
-    color: white;
-    border-radius: 5px;
-    padding: 5px 10px;
-    cursor: pointer;
-    
-}
-
-#filtrar{
-    background-color: var(--main-color);
-    color: white;
-    border-radius: 5px;
-    padding: 5px 10px;
-
-}
 /* cards */
 .artwork-item-card {
+        margin-top: 20px;
         box-sizing: border-box;
         position: relative;
         float: left;
         aspect-ratio: 1/1;
         border-radius: var(--card-border-radius);
         overflow: hidden;
-        background-color: grey;
+        background-color: rgb(39, 11, 70);
     }
 
     .card-thumb-container{
@@ -211,7 +170,9 @@ onMounted(async() => {
         font-size: 1.5rem;
     }
     .card-desc p{
-        font-size: 0.9rem;
+        font-size: 10px;
+        text-align: justify;
+
     }
 
     .card-infos{

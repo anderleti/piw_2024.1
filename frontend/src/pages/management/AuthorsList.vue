@@ -119,9 +119,13 @@ loadUsers()
 
 <style scoped>
   .table-container{
-    width: 100vw;
+    margin-top: 20px;
+    display: block; 
+    margin-left: auto; 
+    margin-right: auto; 
+    padding-top: 20px, 20px, 20px;
+    width: 80vw;
     box-sizing: border-box;
-    padding: var(--main-padding);
   }
 
   .list-table{
@@ -146,7 +150,7 @@ loadUsers()
     width: 100%;
     overflow: hidden;
     display: flex;
-    align-items: stretch;
+    justify-content: center;
   }
 
   .list-table td div img{
@@ -154,6 +158,8 @@ loadUsers()
   }
 
   .create-new a {
+    display: inline-block;
+    align-items: end;
     background-color: var(--dark-color);
     color: var(--light-color);
     padding: 10px;
@@ -171,6 +177,7 @@ loadUsers()
   }
 
   .list-btn-action:first-child{
+    padding: 12px;
     margin-right: 10px;
     background-color: #bb5604;
   }

@@ -198,14 +198,15 @@ onMounted(async() => {
 }
 
 #login-form h2 {
+    margin-bottom: 10px;
     font-weight: bold;
 }
 
 #login-form p {
     font-size: 0.9em;
     color: #1E1E1E;
-
-    margin-bottom: 1em;
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 #login-form span{
@@ -221,16 +222,15 @@ onMounted(async() => {
 
 
 #login-form label{
-    box-sizing: border-box;
     font-weight: 600;
     font-size: 1.1em;
 }
 
 #login-form input[type="text"],input[type="email"], #login-form input[type="password"] {
     box-sizing: border-box;
-    padding: 12px;
-    margin-bottom: 20px;
-    margin-top: 1em;
+    padding: 10px;
+    margin-bottom: 7px;
+    margin-top: 5px;
     background-color: #FFFAF0;
     border: 2px solid var(--dark-color);
     border-radius: 10px;

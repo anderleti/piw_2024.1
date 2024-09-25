@@ -37,35 +37,44 @@ const userStore = useUserStore()
 </template>
 
 <style scoped>
+
   .table-container{
-    width: 100vw;
+    align-items: end;
+    padding: 20px;
+    margin: auto;
+    width: 500px;
+    height: 200px;
     box-sizing: border-box;
-    padding: var(--main-padding);
   }
 
   .list-table{
+    padding: 20px;
+    margin-top: 10px;
+    text-align: left;
     width: 100%;
     box-sizing: border-box; 
-    border-collapse: collapse;
     border-radius: 20px;
     background-color: var(--light-color);
   }
 
   .list-table tbody tr{
+    
     margin-bottom: 1px solid gray;
     text-align: center;
     padding: 10px;
   }
 
   .list-table td, .list-table th{
+    
     text-align: center;
     padding: var(--main-padding);
   }
 
   .list-redirect{
+    text-align: start;
     color: var(--dark-color);
     text-decoration: none;
-    transition: color 0.3s;
-    font-size: 1.2em;
+    font-size: 20px;
   }
+
 </style>

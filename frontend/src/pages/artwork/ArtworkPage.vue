@@ -121,7 +121,7 @@ onMounted(async() => {
 
             <section class="artork-assets-section">
                 <div class="artwork-assets-single-media">
-                    <img @click="toggleCarrousel" class="assets-item" src="https://t3.ftcdn.net/jpg/02/48/42/64/360_F_248426448_NVKLywWqArG2ADUxDq6QprtIzsF82dMF.jpg"/>
+                    <img @click="toggleCarrousel" class="assets-item" src="https://cdnb.artstation.com/p/assets/images/images/029/458/723/large/andissu-scene1-edit.jpg?1597626341"/>
                 </div>
             </section>
             
@@ -220,7 +220,7 @@ onMounted(async() => {
             </div>
         </div>
         <div id="popup-carrousel-selected-image">
-            <img src="https://t3.ftcdn.net/jpg/02/48/42/64/360_F_248426448_NVKLywWqArG2ADUxDq6QprtIzsF82dMF.jpg"/>
+            <img src="https://cdnb.artstation.com/p/assets/images/images/075/726/297/large/anderson-silva-4.jpg?1715270028"/>
         </div>
     </div>
 
