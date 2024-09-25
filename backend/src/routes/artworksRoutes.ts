@@ -4,6 +4,21 @@ import { Artwork } from "../entities/Artwork";
 import { Author } from "../entities/Author";
 import { authenticationJWT } from "../middleware/authMiddleware";
 
+let error =  {
+  status:<String | null> null,
+  name:<String | null> null,
+  message:<String | null> null,
+}
+
+function inputValidation(title:string, desc:string, tag:string){
+  if(!title && !desc && !tag){
+    error.status = "400"
+    error.name = "Invalid input"
+    error.message = "Preencha todos os campos"
+    return (error)
+  }
+}
+
 const router = Router();
 
 // router.use(authenticationJWT);
@@ -45,28 +60,30 @@ router.post("/", async (req, res) => {
     where: {id: Number(authorId)}
   })
 
-  if(!author){
+  inputValidation(title, desc, tag)
+
+  if(!error && author){
+    const newArtwork = {
+      title: title,
+      desc: desc,
+      tag: tag,
+      author: author,
+      date: new Date(),
+      likes: 0,
+      comments: 0,
+    }
+    await artworkRepository.save(newArtwork);
+
+    res.status(201).json({
+      data: newArtwork,
+    });
+  } else {
     res.status(400).json({
-      error: 'Selecione um artista'
+      status: error.status,
+      name: error.name,
+      message: error.message
     })
-    return
   }
-
-  const newArtwork = {
-    title: title,
-    desc: desc,
-    tag: tag,
-    author: author,
-    date: new Date(),
-    likes: 0,
-    comments: 0,
-  }
-
-  await artworkRepository.save(newArtwork);
-
-  res.status(201).json({
-    data: newArtwork,
-  });
 });
 
 export default router;
@@ -76,21 +93,37 @@ router.put("/:id", async (req, res) => {
   const artworkRepository = AppDataSource.getRepository(Artwork);
 
   const artworkId = Number(req.params.id);
-  
-  const {title, desc, tag, authors} = req.body
-
-  const updatedArtwork = {
-    title: title,
-    desc: desc,
-    tag: tag,
-    authors: authors,
-  };
-
-  await artworkRepository.save(updatedArtwork)
-
-  res.status(200).json({
-    data: updatedArtwork,
+  const artwork = await artworkRepository.findOne({
+    where: {
+      id: artworkId
+    }, 
+    relations: ['author']
   });
+  
+  const {title, desc, tag, authors, like, comment} = req.body
+
+  if(!error && artwork){
+    const updateArtwork = {
+      id: artwork.id,
+      title: title ? title : artwork.title,
+      desc: desc ? desc : artwork.title,
+      tag: tag ? tag : artwork.tag,
+      likes: (Number(artwork.likes) + (like? 1 : 0)),
+      comments: (Number(artwork.likes) + (comment? 1 : 0)),
+    }
+    await artworkRepository.save(updateArtwork);
+
+    res.status(201).json({
+      data: updateArtwork,
+    });
+  } else {
+    res.status(400).json({
+      status: error.status,
+      name: error.name,
+      message: error.message
+    })
+  }
+
 });
 //dele an artwork
 router.delete("/:id", async(req, res)=>{

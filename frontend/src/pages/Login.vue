@@ -3,11 +3,14 @@ import { ref, onMounted } from 'vue'
 import { api } from '../api'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '../stores/userStore'
+import { isAxiosError } from 'axios';
+import { isApplicationError } from '../composables/useApplicationError'
+import type { ApplicationError } from '../types';
 
 const router = useRouter()
 const userStore = useUserStore()
 
-const error = ref<Error>()
+const error = ref<ApplicationError>()
 const loading = ref(true)
 const success = ref(false)
 
@@ -32,7 +35,9 @@ async function login(){
         router.push('/')
 
     } catch (e){
-        error.value = e as Error
+        if (isAxiosError(e) && isApplicationError(e)) {
+            error.value = e.response?.data
+        }
     } finally {
         loading.value = false
     }
@@ -72,12 +77,15 @@ async function login(){
                     <span>Não tem uma conta? <a v-bind:href="`/register`">Criar uma conta</a></span><br/>
                     <label for="username">Nome de usuário:</label><br/>
                     <input type="text" id="username" name="username" v-model="username" required><br/>
+                    
                     <label for="password">Senha:</label><br/>
                     <input type="password" id="password" name="password" v-model="password" required><br>
+
                     <!-- <a>Esqueci minha senha</a><br/> -->
 
-                    <div v-if="error">
-                        {{ error }}
+                    <div class="error" v-if="error">
+                        {{ error.message }}
+                        <button @click="error=undefined" type="button" aria-label="Fechar"></button>
                     </div>
 
                     <input type="submit" value="Entrar">

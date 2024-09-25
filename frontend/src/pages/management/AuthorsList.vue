@@ -3,16 +3,23 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { api } from '../../api'
 import { useUserStore } from '../../stores/userStore';
-import type {Author} from "../../types";
+import type {Author, ApplicationError} from "../../types";
+import { isAxiosError } from 'axios';
+import { isApplicationError } from '../../composables/useApplicationError'
+
 
 const router = useRouter()
 
 const userStore = useUserStore()
 
 const authors = ref([] as Author[])
-const error = ref<Error>()
+
+const error = ref<ApplicationError>()
 const loading = ref(true)
-const success = ref(false)
+const success = ref({
+    status: false,
+    message: ''
+})
 
 async function loadUsers(){
     try {
@@ -23,7 +30,30 @@ async function loadUsers(){
     });
     authors.value = res.data.data;
   } catch (e) {
-    error.value = e as Error
+    if (isAxiosError(e) && isApplicationError(e)) {
+            error.value = e.response?.data
+        }
+  } finally {
+    loading.value = false
+  }
+};
+
+async function deleteAuthor(id:number){
+    try {
+    const res = await api.delete(`/authors/${id}`, {
+        headers: {
+        Authorization: `Bearer ${userStore.jwt}`
+      }
+    });
+    let deleted = authors.value.findIndex(a=>id === a.id);
+    authors.value.splice(deleted, 1)
+    success.value.status = true;
+    success.value.message = "Trabalho deletado com sucesso."
+  
+  } catch (e) {
+    if (isAxiosError(e) && isApplicationError(e)) {
+            error.value = e.response?.data
+        }
   } finally {
     loading.value = false
   }
@@ -38,12 +68,12 @@ loadUsers()
 
   <div v-if="error" class="alert alert-danger alert-dismissible" role="alert">
     {{ error.message }}
-    <!-- <button @click="erro=undefined" type="button" class="btn-close" aria-label="Close"></button> -->
+    <button @click="error=undefined" type="button" class="btn-close" aria-label="Close"></button>
   </div>
 
-  <div v-if="success" class="alert alert-success alert-dismissible" role="alert">
-    O usuário foi removido com sucesso
-    <button @click="success=false" type="button" class="btn-close" aria-label="Close"></button>
+  <div v-if="success.status" class="alert alert-success alert-dismissible" role="alert">
+    {{ success.message }}
+    <button @click="success.status = false" type="button" class="btn-close" aria-label="Close"></button>
   </div>
 
   <div v-if="loading" class="d-flex justify-content-center">
@@ -72,7 +102,7 @@ loadUsers()
         <td>{{ author.bio }}</td>
         <td>
           <RouterLink class="list-btn-action" :to="`/authors/${author.id}`">Editar</RouterLink>
-          <button @click="" class="list-btn-action">Deletar</button>
+          <button @click="deleteAuthor(author.id)" class="list-btn-action">Deletar</button>
         </td>
       </tr>
       <tr>

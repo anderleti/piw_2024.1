@@ -5,7 +5,11 @@ import { Role } from "../entities/Role";
 import { authenticationJWT } from "../middleware/authMiddleware";
 import bcrypt from "bcryptjs";
 
-let error: String | null = null;
+let error =  {
+  status:<String | null> null,
+  name:<String | null> null,
+  message:<String | null> null,
+}
 
 function inputValidation(
   username: string,
@@ -21,17 +25,31 @@ function inputValidation(
     );
 
     if (username.length < 3) {
-      return (error = "Nome de usuário deve ter pelo menos 3 caracteres.");
+      error.status = "400"
+      error.name = "Validation Error"
+      error.message= "O seu nome de usuário deve ter pelo menos 3 caracteres."
+      return (error);
     } else if (name.length < 5) {
-      return (error = "O seu nome deve ter pelo menos 5 caracteres.");
+      error.status = "400"
+      error.name = "Validation Error"
+      error.message = "O seu nome de usuário deve ter pelo menos 5 caractes"
+      return (error);
     } else if (!emailRegex.exec(email)) {
-      return (error = "Email inválido.");
+      error.status = "400"
+      error.name = "Validation Error"
+      error.message= "Email inválido."
+      return (error);
     } else if (!passwordRegex.exec(password)) {
-      return (error =
-        "Senha inválida. Certifique-se de que a senha tenha pelo menos 8 caracteres, 1 número e 1 letra maiúscula.");
+      error.status = "400"
+      error.name = "Validation Error"
+      error.message= "A senha deve ter pelo menos 8 caracteres, conter letras maiúsculas, minúsculas, números e caracteres especiais."
+      return (error);
     }
   } else {
-    return (error = "Todos os campos devem ser preenchidos.");
+    error.status = "400"
+    error.name = "Validation Error"
+    error.message = "Todos os campos devem ser preenchidos."
+    return (error)
   }
 }
 
@@ -62,8 +80,14 @@ router.get("/:id", authenticationJWT, async (req, res) => {
       data: user,
     });
   } else {
-    error = "Usuário não encontrado.";
-    res.status(400).json({ error });
+    error.status = "404"
+    error.name = "Not Found"
+    error.message = "Usuário não encontrado.";
+    res.status(404).json({ 
+      status: error.status,
+      name: error.name,
+      message: error.message,
+     });
   }
 });
 
@@ -81,25 +105,34 @@ router.post("/",async (req, res) => {
   }
 
   inputValidation(username, name , email, password);
+
   if (!roleInDb) {
     roleInDb = roleRepository.create({ name: role });
     await roleRepository.save(roleInDb);
   }
 
-  const hashedPassword = bcrypt.hashSync(password, 10);
+  if(!error){
+    const hashedPassword = bcrypt.hashSync(password, 10);
+    const newUser = {
+      username: username,
+      name: name,
+      email: email,
+      password: hashedPassword,
+      role: roleInDb,
+    };
 
-  const newUser = {
-    username: username,
-    name: name,
-    email: email,
-    password: hashedPassword,
-    role: roleInDb,
-  };
+    await userRepository.save(newUser);
+    res.status(201).json({
+      data: newUser,
+    });
+  } else {
+      res.status(400).json({ 
+        status: error.status,
+        name: error.name,
+        message: error.message,
+      });
+  }
 
-  await userRepository.save(newUser);
-  res.status(201).json({
-    data: newUser,
-  });
 });
 
 //update specific user
@@ -138,10 +171,17 @@ router.put("/:id", authenticationJWT, async (req, res) => {
         data: newData,
       });
     } else {
-      res.status(400).json({ error });
+      res.status(400).json({ 
+        status: error.status,
+        name: error.name,
+        message: error.message, });
     }
   } else {
-    res.status(404).json({ erro: "Usuário não encontrado." });
+    res.status(404).json({ 
+      status: "404", 
+      name: "Not Found",
+      message: "Usuário não encontrado.",
+     });
   }
 });
 
@@ -158,8 +198,14 @@ router.delete("/:id", authenticationJWT,async (req, res) => {
       data: userToRemove,
     });
   } else {
-    error = "Usuário não encontrado.";
-    res.status(404).json({ error });
+    error.status = "404"
+    error.name = "Not Found"
+    error.message = "Usuário não encontrado.";
+    res.status(404).json({ 
+      status: error.status,
+      name: error.name,
+      message: error.message,
+     });
   }
 });
 

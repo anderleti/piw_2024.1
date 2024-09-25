@@ -3,7 +3,9 @@ import { ref, onMounted } from 'vue'
 import {useRouter, useRoute} from 'vue-router'
 import { api } from '../../api'
 import { useUserStore } from '../../stores/userStore'
-import type { Author, Artwork } from '../../types';
+import { isAxiosError } from 'axios';
+import { isApplicationError } from '../../composables/useApplicationError'
+import type { Author, Artwork, ApplicationError } from '../../types';
 
 const route = useRoute()
 const router = useRouter()
@@ -19,9 +21,8 @@ const success = ref({
     status: false,
     message: ''
 })
-
-const error = ref<Error>()
-const loading = ref(true)
+const error = ref<ApplicationError>()
+const loading = ref(false)
 
 function addAuthor(authorId: Number) {
     selectedAuthors.value.push(authorId)
@@ -37,9 +38,14 @@ async function addArtwork(){
             authorId: selectedAuthors.value,
         })
         artwork.value = res.data.data
-        // router.push('/portfolio')
+        success.value = {
+            status: true,
+            message: 'Trabalho adicionado com sucesso'
+        }
     } catch (e) {
-        error.value = e as Error
+        if (isAxiosError(e) && isApplicationError(e)) {
+            error.value = e.response?.data
+        }
     } finally {
         loading.value = false
     }
@@ -60,7 +66,9 @@ async function updateArtwork(){
             message: 'Trabalho atualizado com sucesso'
         }
     } catch (e) {
-        error.value = e as Error
+        if (isAxiosError(e) && isApplicationError(e)) {
+            error.value = e.response?.data
+        }
     } finally {
         loading.value = false
     }
@@ -76,7 +84,9 @@ async function loadArtwork(userId: Number){
         })
         artwork.value = res.data.data
     } catch (e) {
-        error.value = e as Error
+        if (isAxiosError(e) && isApplicationError(e)) {
+            error.value = e.response?.data
+        }
     } finally {
         loading.value = false
     }
@@ -92,23 +102,25 @@ async function loadAuthors(){
         })
         authors.value = res.data.data
     } catch (e) {
-        error.value = e as Error
+        if (isAxiosError(e) && isApplicationError(e)) {
+            error.value = e.response?.data
+        }
     } finally {
         loading.value = false
     }
 }
 
-
 onMounted(async() => {
-id.value = Number(route.params.id);
-if(id.value && id.value != -1){
-    await loadArtwork(id.value);
-}
-await loadAuthors();
+    id.value = Number(route.params.id);
+    if(id.value && id.value != -1){
+        await loadArtwork(id.value);
+    }
+    await loadAuthors();
 })
 </script>
 
 <template>
+    <div v-if="loading" class="loading">Carregando...</div>
     <form id="artwork-page-container" @submit.prevent="id ? updateArtwork() : addArtwork()">
         <section id="artwork-page-assets">
             <section class="artork-assets-section">
@@ -145,11 +157,13 @@ await loadAuthors();
             <input v-if="!id" type="submit" id="submit" name="submit" value="Cadastrar trabalho">
             <input v-else type="submit" id="submit" name="submit" value="Atualizar trabalho">
             
-            <div v-if="success.status">
-            {{ success.message }}
+            <div v-if="success.status" class="success">
+                {{ success.message }}
+                <button @click="success.status=false" type="button" class="btn-close" aria-label="Close"></button>
             </div>
-            <div v-if="error">
-            {{ error }}
+            <div v-if="error" class="error">
+                {{ error.message }}
+                <button @click="error=undefined" type="button" aria-label="Fechar"></button>
             </div>
         </section>
     </form>

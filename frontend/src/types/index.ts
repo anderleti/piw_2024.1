@@ -39,3 +39,8 @@ export type Comment = {
   user: User;
   artwork: Artwork;
 }
+
+export type ApplicationError = {
+  name: string;
+  message: string;
+}

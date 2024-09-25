@@ -3,8 +3,6 @@ import { AppDataSource } from "../database/data-source";
 import { Role } from "../entities/Role";
 import { authenticationJWT } from "../middleware/authMiddleware";
 
-
-
 const router = Router();
 
 router.use(authenticationJWT);

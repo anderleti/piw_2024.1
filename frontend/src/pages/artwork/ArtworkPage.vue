@@ -91,6 +91,22 @@ async function sendLike(){
     }
 }
 
+async function deleteLike(){
+    try {
+        await api.delete(`/likes`, { 
+            artwork: route.params.id,
+            user: userStore.user.id,
+        })
+        isliked.value =!isliked.value
+    } catch (e) {
+        error.value = e as Error
+    } 
+    finally {
+        await loadComments()
+
+    }
+}
+
 
 onMounted(async() => {
     await loadArtwork()
@@ -140,7 +156,7 @@ onMounted(async() => {
             </div> -->
 
             <div class="artwork-actions">
-                <button @click="sendLike">{{ isliked ? "tirar like" : "dar like"}}</button>
+                <button @click="isliked ? deleteLike : sendLike">{{ isliked ? "tirar like" : "dar like"}}</button>
                 <button class="artwork-like-btn">
                     <svg class="artwork-svg-icon" version="1.1" viewBox="0 0 4.2333 4.2333" xmlns="http://www.w3.org/2000/svg">
                         <g transform="matrix(.075456 0 0 .075456 -15.223 -4.6379)" stroke-linecap="round" stroke-linejoin="round" stroke-width=".52917">

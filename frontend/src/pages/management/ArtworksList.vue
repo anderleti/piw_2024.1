@@ -3,18 +3,24 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { api } from '../../api'
 import { useUserStore } from '../../stores/userStore';
-import type {Artwork} from "../../types";
+import { isAxiosError } from 'axios';
+import { isApplicationError } from '../../composables/useApplicationError'
+import type { Author, Artwork, ApplicationError } from '../../types';
 
 const router = useRouter()
 
 const userStore = useUserStore()
 
 const artworks = ref([] as Artwork[])
-const error = ref<Error>()
-const loading = ref(true)
-const success = ref(false)
+const success = ref({
+    status: false,
+    message: ''
+})
+const error = ref<ApplicationError>()
+const loading = ref(false)
 
 async function loadArtworks(){
+  loading.value = true
     try {
     const res = await api.get('/artworks', {
         headers: {
@@ -23,13 +29,39 @@ async function loadArtworks(){
     });
     artworks.value = res.data.data;
   } catch (e) {
-    error.value = e as Error
+    if (isAxiosError(e) && isApplicationError(e)) {
+            error.value = e.response?.data
+        }
   } finally {
     loading.value = false
   }
 };
 
-loadArtworks()
+async function deleteArtwork(id:number){
+    try {
+    const res = await api.delete(`/artworks/${id}`, {
+        headers: {
+        Authorization: `Bearer ${userStore.jwt}`
+      }
+    });
+    let deleted = artworks.value.findIndex(a=>id === a.id);
+    artworks.value.splice(deleted, 1)
+    success.value.status = true;
+    success.value.message = "Trabalho deletado com sucesso."
+  
+  } catch (e) {
+    if (isAxiosError(e) && isApplicationError(e)) {
+            error.value = e.response?.data
+        }
+  } finally {
+    loading.value = false
+  }
+};
+
+onMounted(async() => {
+  loadArtworks()
+})
+
 </script>
 
 <template>
@@ -38,12 +70,12 @@ loadArtworks()
 
   <div v-if="error" class="alert alert-danger alert-dismissible" role="alert">
     {{ error.message }}
-    <!-- <button @click="erro=undefined" type="button" class="btn-close" aria-label="Close"></button> -->
+    <button @click="error=undefined" type="button" aria-label="Fechar"></button>
   </div>
 
   <div v-if="success" class="alert alert-success alert-dismissible" role="alert">
-    O usuário foi removido com sucesso
-    <button @click="success=false" type="button" class="btn-close" aria-label="Close"></button>
+    {{ success.message }}
+    <button @click="success.status=false" type="button" class="btn-close" aria-label="Close"></button>
   </div>
 
   <div v-if="loading" class="d-flex justify-content-center">
@@ -72,7 +104,7 @@ loadArtworks()
         <td>{{ artwork.author.name }}</td>
         <td>
           <RouterLink class="list-btn-action" :to="`/authors/${artwork.id}`">Editar</RouterLink>
-          <button @click="" class="list-btn-action"><i class="bi bi-trash">Deletar</i></button>
+          <button @click="deleteArtwork(artwork.id)" class="list-btn-action">Deletar</button>
         </td>
       </tr>
       <tr>

@@ -3,7 +3,9 @@ import { ref, onMounted } from 'vue'
 import {useRouter, useRoute} from 'vue-router'
 import { api } from '../../api'
 import { useUserStore } from '../../stores/userStore'
-import type { User, Role } from '../../types';
+import { isAxiosError } from 'axios';
+import { isApplicationError } from '../../composables/useApplicationError'
+import type { User, Role, ApplicationError } from '../../types';
 
 
 const route = useRoute()
@@ -18,8 +20,10 @@ const success = ref({
     status: false,
     message: ''
 })
-const error = ref<Error>()
+
+const error = ref<ApplicationError>()
 const loading = ref(true)
+
 
 const id = ref<Number>(-1)
 
@@ -42,7 +46,9 @@ async function addUser(){
         user.value = res.data.data
         router.push('/login')
     } catch (e) {
-        error.value = e as Error
+        if (isAxiosError(e) && isApplicationError(e)) {
+            error.value = e.response?.data
+        }
     } finally {
         loading.value = false
     }
@@ -64,9 +70,11 @@ async function updateUser(){
         })
         user.value = res.data.data
         success.value.status = true
-        success.value.message = "Usuário atualizado com sucesos"
+        success.value.message = "Usuário atualizado com successo"
     } catch (e) {
-        error.value = e as Error
+        if (isAxiosError(e) && isApplicationError(e)) {
+            error.value = e.response?.data
+        }
     } finally {
         loading.value = false
     }
@@ -83,7 +91,9 @@ async function loadUser(userId: Number){
         user.value = res.data.data
         user.value.password = ""
     } catch (e) {
-        error.value = e as Error
+        if (isAxiosError(e) && isApplicationError(e)) {
+            error.value = e.response?.data
+        }
     } finally {
         loading.value = false
     }
@@ -144,12 +154,12 @@ onMounted(async() => {
                     <input type="password" id="password" name="password" v-model="user.password" required><br>
                     <!-- <a>Esqueci minha senha</a><br/> -->
                     <label v-if="userStore.role == 'Admin'" for="role">Função:</label>
-                    <select v-if="userStore.role == 'Admin'" id="role" name="role" v-model="user.role">
+                    <select v-if="userStore.role == 'Admin'" id="role" name="role" v-model="user.role" required>
                         <option v-for="role in roles" :key="role.id">{{ role.name }}</option>
                     </select>
 
-                    <div v-if="error">
-                        {{ error }}
+                    <div class="error" v-if="error">
+                        {{ error.message }}
                     </div>
 
                     <input v-if="!id" type="submit" value="Criar conta">

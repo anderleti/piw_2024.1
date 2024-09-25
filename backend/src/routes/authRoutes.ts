@@ -48,7 +48,7 @@ router.post("/login", async (req, res) => {
     res.status(401).json({
       status: 401,
       name: "Authentication Error",
-      message: "Username or password incorrect",
+      message: "Nome de usuário ou senha incorreta!",
     });
   }
 });
@@ -56,7 +56,7 @@ router.post("/login", async (req, res) => {
 router.get("/logout", (req, res) => {
   res.status(200).json({
     data: {
-      message: "Logout realized with sucess",
+      message: "Logou realizado com sucesso",
     },
   });
 });

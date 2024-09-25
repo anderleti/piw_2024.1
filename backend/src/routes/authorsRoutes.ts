@@ -5,6 +5,21 @@ import { authenticationJWT } from "../middleware/authMiddleware";
 
 const router = Router();
 
+let error =  {
+  status:<String | null> null,
+  name:<String | null> null,
+  message:<String | null> null,
+}
+
+function inputValidation(title:string, desc:string, tag:string){
+  if(!title && !desc && !tag){
+    error.status = "400"
+    error.name = "Invalid input"
+    error.message = "Preencha todos os campos"
+    return (error)
+  }
+}
+
 // router.use(authenticationJWT);
 
 //show all authors
@@ -25,13 +40,27 @@ router.get("/:id", async (req, res) => {
       id: authorId
     }
   });
-  res.status(200).json({
-    data: author,
-  });
+
+  if(author){
+    res.status(200).json({
+      data: author,
+    });
+  } else {
+    error.status = "404"
+    error.name = "Not Found"
+    error.message = "Autor não encontrado.";
+    res.status(404).json({ 
+      status: error.status,
+      name: error.name,
+      message: error.message,
+    });
+  }
+
+  
 });
 
 //add an author
-router.post("/", async (req, res) => {
+router.post("/", authenticationJWT, async (req, res) => {
   const authorRepository = AppDataSource.getRepository(Author);
 
   const {name, username, bio, photo} = req.body
@@ -53,26 +82,39 @@ router.post("/", async (req, res) => {
 export default router;
 
 //update an author
-router.put("/:id", async (req, res) => {
+router.put("/:id", authenticationJWT, async (req, res) => {
   const authorRepository = AppDataSource.getRepository(Author);
 
   const authorId = Number(req.params.id);
   const {name, username, bio, photo} = req.body;
 
-  const updatedAuthor = await authorRepository.save({
-    id: authorId,
-    name: name,
-    username: username,
-    bio: bio,
-    photo: photo,
-  });
+  if(name && username && bio && photo){
+    const updatedAuthor = await authorRepository.save({
+      id: authorId,
+      name: name,
+      username: username,
+      bio: bio,
+      photo: photo,
+    });
+  
+    res.status(200).json({
+      data: updatedAuthor,
+    });
+  } else {
+    error.status = "400"
+    error.name = "Invalid input"
+    error.message = "Preencha todos os campos";
+    res.status(404).json({ 
+      status: error.status,
+      name: error.name,
+      message: error.message,
+     });
+  }
 
-  res.status(200).json({
-    data: updatedAuthor,
-  });
+  
 });
 //dele an author
-router.delete("/:id", async(req, res)=>{
+router.delete("/:id",authenticationJWT, async(req, res)=>{
   const authorRepository = AppDataSource.getRepository(Author);
   const authorId = Number(req.params.id);
   const authorToRemove = await authorRepository.findOne({
@@ -86,6 +128,15 @@ router.delete("/:id", async(req, res)=>{
     res.status(200).json({
       data: authorToRemove,
     });
+  } else {
+    error.status = "404"
+    error.name = "Not found"
+    error.message = "Autor não existe";
+    res.status(404).json({ 
+      status: error.status,
+      name: error.name,
+      message: error.message,
+     });
   }
 
 })

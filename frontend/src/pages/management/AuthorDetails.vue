@@ -4,21 +4,23 @@ import {useRouter, useRoute} from 'vue-router'
 import { api } from '../../api'
 import { useUserStore } from '../../stores/userStore'
 import type { Author } from '../../types';
-
+import { isAxiosError } from 'axios';
+import { isApplicationError } from '../../composables/useApplicationError'
+import type { ApplicationError } from '../../types';
 
 const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
 
-const author = ref({} as Author);
-
+const error = ref<ApplicationError>()
+const loading = ref(true)
 const success = ref({
     status: false,
     message: ''
 })
 
-const error = ref<Error>()
-const loading = ref(true)
+const author = ref({} as Author);
+
 
 const id = ref<Number>(-1)
 
@@ -58,7 +60,9 @@ async function addUser(){
         success.value.status = true;
         success.value.message = "Autor criado com sucesso";
     } catch (e) {
-        error.value = e as Error
+        if (isAxiosError(e) && isApplicationError(e)) {
+            error.value = e.response?.data
+        }
     } finally {
         loading.value = false
     }
@@ -81,14 +85,12 @@ async function updateUser(){
         success.value.status = true
         success.value.message = "Autor atualizado com sucesso"
     } catch (e) {
-        error.value = e as Error
+        if (isAxiosError(e) && isApplicationError(e)) {
+            error.value = e.response?.data
+        }
     } finally {
         loading.value = false
     }
-}
-
-function deleteRequest(id:Number){
-    id
 }
 
 async function loadAuthor(userId: Number){
@@ -96,12 +98,14 @@ async function loadAuthor(userId: Number){
         loading.value = true
         const res = await api.get(`/authors/${userId}`, {
             headers: {
-        Authorization: `Bearer ${userStore.jwt}`
-      }
+                Authorization: `Bearer ${userStore.jwt}`
+            }
         })
         author.value = res.data.data
     } catch (e) {
-    error.value = e as Error
+        if (isAxiosError(e) && isApplicationError(e)) {
+            error.value = e.response?.data
+        }
     } finally {
         loading.value = false
     }
@@ -152,7 +156,8 @@ onMounted(async() => {
           
 
                     <div v-if="error">
-                        {{ error }}
+                        {{ error.message }}
+                        <button @click="error=undefined" type="button" aria-label="Fechar"></button>
                     </div>
 
                     <input v-if="!id" type="submit" value="Adicionar">

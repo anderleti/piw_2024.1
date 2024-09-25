@@ -5,7 +5,11 @@ import { authenticationJWT } from "../middleware/authMiddleware";
 import { User } from "../entities/User";
 import { Artwork } from "../entities/Artwork";
 
-let error: String | null = null;
+let error =  {
+  status:<String | null> null,
+  name:<String | null> null,
+  message:<String | null> null,
+}
 
 const router = Router();
 
@@ -21,9 +25,13 @@ router.get("/:id", async (req, res) => {
     where: { id: artworkId }
   });
   if (!artworkcomment) {
-      error = "Obra não encontrada.";
+      error.status = '404';
+      error.name = "Not found";
+      error.message = "Trabalho não encontrado";
       res.status(400).json({
-        data: error,
+        status: error.status,
+        name: error.name,
+        message: error.message,
       });
       return;
   }
@@ -42,9 +50,13 @@ router.post("/", async (req, res) => {
     const commentRepository = AppDataSource.getRepository(Comments);
     const { user, artwork, comment } = req.body;
     if (!user ||!artwork ||!comment) {
-        error = "Comentário não pode ser vazio";
+        error.status = '404';
+        error.name = "Not found";
+        error.message = "Trabalho não encontrado";
         res.status(400).json({
-          data: error,
+          status: error.status,
+          name: error.name,
+          message: error.message,
         });
         return;
     }
@@ -56,7 +68,9 @@ router.post("/", async (req, res) => {
       relations: ["role"],
     });
     if (!usercomment) {
-        error = "Usuário não encontrado.";
+      error.status = '404';
+      error.name = "Not found";
+      error.message = "Usuário não encontrado";
         res.status(400).json({
           data: error,
         });
@@ -68,12 +82,16 @@ router.post("/", async (req, res) => {
       where: { id: artworkId }
     });
     if (!artworkcomment) {
-        error = "Obra não encontrada.";
-        res.status(400).json({
-          data: error,
-        });
-        return;
-    }
+      error.status = '404';
+      error.name = "Not found";
+      error.message = "Trabalho não encontrado";
+      res.status(400).json({
+        status: error.status,
+        name: error.name,
+        message: error.message,
+      });
+      return;
+  }
 
     
     const newComments = {
