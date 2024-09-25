@@ -1,4 +1,5 @@
 import { createWebHistory, createRouter } from 'vue-router'
+import { useUserStore } from '../stores/userStore';
 
 import Login from '../pages/Login.vue';
 import About from '../pages/About.vue';
@@ -30,23 +31,23 @@ const routes =[
     {path: '/register', component: UserDetails, meta: {navBar: false, title: 'Criar conta'}},
 
     // management routes
-    {path: '/manage', component: Management,meta: {title: 'Gerenciar'}},
+    {path: '/manage', component: Management,meta: {requiresAuth: true, restricted: true,title: 'Gerenciar'}},
 
-    {path: '/authors', component: ArtistsList,meta: {title: 'Gerenciar autores'}},
+    {path: '/authors', component: ArtistsList, requiresAuth: true,meta: {title: 'Gerenciar autores'}},
 
-    {path: '/authors/new', component: ArtistsDetails, meta: {title: 'Adicionar autores'}},
+    {path: '/authors/new', component: ArtistsDetails, meta:{requiresAuth: true, restricted: true,title: 'Adicionar autores'}},
 
-    {path: '/authors/:id', component: ArtistsDetails, meta: {title: 'Dados do autor'}},
+    {path: '/authors/:id', component: ArtistsDetails, meta:{requiresAuth: true, restricted: true,title: 'Dados do autor'}},
 
-    {path: '/artworks', component: ArtworksList, meta: {title: 'Gerenciar trabalhos'}},
+    {path: '/artworks', component: ArtworksList, meta:{requiresAuth: true, restricted: true,title: 'Gerenciar trabalhos'}},
 
-    {path: '/artworks/new', component: ArtworkDetails, meta: {title: 'Gerenciar trabalhos'}},
+    {path: '/artworks/new', component: ArtworkDetails, meta:{requiresAuth: true, restricted: true,title: 'Gerenciar trabalhos'}},
 
-    {path: '/artworks/:id', component: ArtworkDetails, meta: {title: 'Dados do trabalho'}},
+    {path: '/artworks/:id', component: ArtworkDetails, meta:{requiresAuth: true, restricted: true,title: 'Dados do trabalho'}},
 
-    {path: '/users', component: UsersList, meta: {title: 'Usuários'}},
+    {path: '/users', component: UsersList, meta:{requiresAuth: true, restricted: true,title: 'Usuários'}},
 
-    {path: '/users/:id', component: UserDetails, meta: {title: 'Dados do usuário'}},
+    {path: '/users/:id', component: UserDetails, meta:{requiresAuth: true, restricted: false,title: 'Dados do usuário'}},
 ]
 
 export const router = createRouter({
@@ -55,13 +56,21 @@ export const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  const userStore = useUserStore();
   const title = to.meta.title
   const titleFromParams = to.params.pageTitle;
-  if (title) {
-    document.title = title.toString()
+
+ if( to.meta.requiresAuth && !userStore.isAuthenticated ) {
+    next('/login') 
+  } else {
+    if ( to.meta.restricted && userStore.role !== 'Admin' ) {
+      next('/unauthorized')
+    } else {
+      if (title) {
+        document.title = title.toString()
+      }
+      next()
+    }
+
   }
-  // if (titleFromParams) {
-  //   document.title = `${titleFromParams} - ${document.title}`;
-  // }
-  next()
 })

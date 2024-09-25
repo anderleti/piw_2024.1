@@ -144,6 +144,8 @@ body {
     transition: 0.1s linear;
 }
 
+
+
 #nav-bar ul li a:hover {
     border-bottom: var(--main-text-color) 3px solid;
 }
