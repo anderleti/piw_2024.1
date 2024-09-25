@@ -159,12 +159,13 @@ router.put("/:id", authenticationJWT, async (req, res) => {
   if (userToUpdate) {
     // inputValidation(username, name, email, password);
     if (!error.status) {
+      const hashedPassword = bcrypt.hashSync(password, 10);
       const newData = {
         id: userId,
         username: username,
         name: name,
         email: email,
-        password: password,
+        password: hashedPassword,
         role: roleInDb,
       };
 

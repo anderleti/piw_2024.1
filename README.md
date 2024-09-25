@@ -11,6 +11,35 @@ Letícia Maciel Silva, 535833, Design Digital
 ## Domínio da aplicação
 - Site de exposição de trabalhos artísticos
 
+## Como acessar?
+No terminal, siga os seguintes passos:
+- backend
+```
+cd backend
+npm install
+npm run dev
+```
+- frontend
+```
+cd frontend
+npm install
+npm run dev
+```
+
+- dados dos usuários
+```
+username: brunoadm
+password: Bruno123&
+(administrador)
+```
+```
+username: brunouser
+password: Bruno123&
+(usuário comum)
+```
+
+
+
 ## Papeis ou tipos de usuário da aplicação
 
 - Usuário não registrado
@@ -41,7 +70,7 @@ Letícia Maciel Silva, 535833, Design Digital
 
 **Sobre os trabalhos**
 - O trabalho terá atribuições de curtidas,  e comentários categorizados dos mais recentes aos mais antigos.
-- Os trabalhos podem ser imagens, vídeos, tabelas, visualizações 3D.
+- Os trabalhos podem ser imagens.
 
 
 **Sobre as interações**
@@ -51,24 +80,29 @@ Letícia Maciel Silva, 535833, Design Digital
 
 ## Tecnologias e frameworks utilizados
 **Frontend:**
-- VueJS v3.0, Vue-Router e Pinia.
+- VueJS v3.0
+- Vue-Router 
+- Pinia.
 - Axios.
-- Bootstrap
+
 
 **Backend:**
 - NodeJs
 - Express
-- ThreeJS.
+- SQLite
+- TypeORM
+- JsonWebToken
+
 
 ## Operações implementadas para cada entidade da aplicação
 
 
 | Entidade | Criação (C) | Leitura (R) | Atualização (U) | Remoção (D) |
 | ------------- | ------------- | ------------- | ------------- | ------------- |
-| Usuário  |  |  |  |  |
+| Usuário  | X  | X | X | X |
 | Trabalho artistisco | X  | X  | X  | X  |
-| Comentário | X  | X  | X  | X  |
-| Salvar | X  | X  |   | X  |
+| Autor | X  | X  | X  | X  |
+| Comentário | X  | X  | X  |   |
 | Curtidas | X  | X  |   | X  |
 
 
@@ -76,11 +110,22 @@ Letícia Maciel Silva, 535833, Design Digital
 ## Rotas da API REST utilizadas
 |Método HTTP | URL |
 | ------------- | ------------- |
-| POST  | /auth/local |
-| GET | /users/me |
+| POST  | /api/login |
+| GET | /api/users/:id |
+| GET | /api/users/ |
 | GET | /api/artworks |
 | GET | /api/artworks/{id} |
 | POST | /api/artworks |
 | PUT | /api/artworks/{id} |
-| PUT | /api/artworks/{id} |
+| DELETE | /api/artworks/{id} |
+| GET | /api/authors/ |
+| GET | /api/authors/{id} |
+| PUT | /api/authors/{id} |
+| DELETE | /api/authors/{id} |
+| GET | /api/likes/{artworkId && userId} |
+| POST | /api/likes/{artworkId && userId} |
+| DELETE | /api/likes/{artworkId && userId} |
+| GET | /api/comments/{artworkId && userId} |
+| POST | /api/comments/{artworkId && userId} |
+| DELETE | /api/comments/{artworkId && userId} |
 

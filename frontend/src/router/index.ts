@@ -14,7 +14,7 @@ import ArtworkDetails from '../pages/management/ArtworkDetails.vue';
 
 import ArtworksGrid from '../pages/artwork/ArtworksGrid.vue';
 import ArtworkPage from '../pages/artwork/ArtworkPage.vue';
-import Unauthorized from '../pages/unauthorized.vue';
+import Unauthorized from '../pages/Unauthorized.vue';
 
 const routes =[
     // main routes
