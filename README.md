@@ -29,12 +29,12 @@ npm run dev
 - dados dos usuários
 ```
 username: brunoadm
-password: Bruno123&
+password: Bruno1234& 
 (administrador)
 ```
 ```
 username: brunouser
-password: Bruno123&
+password: Bruno1234& 
 (usuário comum)
 ```
 
